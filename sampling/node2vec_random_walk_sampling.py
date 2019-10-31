@@ -41,20 +41,24 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         Repeatedly simulate random walks from each node.
         """
         if self.is_directed:
-            sampled_graph = nx.Graph()
-        else:
             sampled_graph = nx.DiGraph()
+        else:
+            sampled_graph = nx.Graph()
 
         nodes = list(self.G.nodes())
+        n_edges = self.G.number_of_edges()
+        print("Total number of nodes: ", len(nodes))
+        print("Total number of edges: ", n_edges)
 
-        print("Walk iteration:")
+        print("Walk iterations:")
         walk_iter = 0
-        while walk_iter < max_number_walk:
-            print("- walk iteration: ", str(walk_iter + 1))
+        is_stopped = False
+        while walk_iter < max_number_walk and not is_stopped:
+            print("- Walk iteration: ", str(walk_iter + 1))
             random.shuffle(nodes)
             for node in nodes:
                 sampled_walk = self.node2vec_walk(walk_length=walk_length, start_node=node)
-                print(sampled_walk)
+                # print(sampled_walk)
                 previous_node = sampled_walk[0]
                 # use the sampled_walk to construct the sampled_graph
                 for i in range(1, len(sampled_walk)):
@@ -64,8 +68,11 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                     # update previous node
                     previous_node = current_node
 
-            if sampled_graph.number_of_edges() >= self.sampled_size:
-                break
+                # print("\t- Current sampled edges: ", sampled_graph.number_of_edges())
+                if sampled_graph.number_of_edges() >= self.sampled_size or sampled_graph.number_of_edges() == n_edges:
+                    is_stopped = True
+                    break
+
             walk_iter += 1
 
         return sampled_graph
@@ -203,7 +210,7 @@ def alias_draw(J, q):
 def main():
     data_path = '../data/karate/karate.edgelist'
     is_directed = False
-    sampled_size = 100
+    sampled_size = 50
 
     args = dict()
     args['p'] = 0.25
