@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cad39f1-dcba-4622-aa60-3919d4125daf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/lguan.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/lguan.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_preprocessor/amazon_snap_preprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preprocessor/amazon_snap_preprocessor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_preprocessor/live_journal_snap_preprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preprocessor/live_journal_snap_preprocessor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_preprocessor/youtube_snap_preprocessor..py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preprocessor/youtube_snap_preprocessor..py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sampling/node2vec_random_walk_sampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/sampling/node2vec_random_walk_sampling.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -204,6 +202,7 @@
       <workItem from="1572156951067" duration="2017000" />
       <workItem from="1572161974698" duration="17066000" />
       <workItem from="1572474945647" duration="12414000" />
+      <workItem from="1572545582345" duration="214000" />
     </task>
     <servers />
   </component>

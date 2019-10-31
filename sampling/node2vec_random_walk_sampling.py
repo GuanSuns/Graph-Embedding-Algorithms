@@ -1,3 +1,8 @@
+# node2vec_random_walk_sampling.py
+# -----------------------------------------
+# Implement the random walk sampling used in Node2Vec
+# The implementation is based on Aditya Grover's code: https://github.com/aditya-grover/node2vec
+
 import networkx as nx
 import numpy as np
 import random
@@ -219,7 +224,7 @@ def main():
 
     node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, sampled_size, args)
     sampled_graph = node2vec_random_walk_sampling.get_sampled_graph()
-    print('number of nodes in the sampled graph:', sampled_graph.number_of_nodes())
+    print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
     print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
 
 
