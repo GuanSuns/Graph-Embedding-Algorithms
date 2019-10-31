@@ -1,4 +1,4 @@
-from .snap_community_preprocessor import load_graph_from_txt, save_graph_to_edge_list
+from data_preprocessor.snap_community_preprocessor import load_graph_from_txt, save_graph_to_edge_list
 
 
 def main():
