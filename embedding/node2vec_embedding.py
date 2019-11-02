@@ -1,5 +1,8 @@
 from gem.embedding.static_graph_embedding import StaticGraphEmbedding
 from gensim.models import Word2Vec
+import time
+
+from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 
 
 # noinspection PyMissingConstructor
@@ -10,24 +13,19 @@ class Node2VecEmbedding(StaticGraphEmbedding):
         The initializer of the Node2VecEmbedding class
         :param kwargs: a dict contains:
             d: dimension of the embedding
-            max_iter: max iterations
             window_size: context size for optimization
+            max_iter: max number of iterations
             n_workers: number of parallel workers
-            ret_p: return weight
-            inout_p: inout weight
         """
         self._method_name = 'Node2Vec-Embedding'
         self.d = d
         self.max_iter = kwargs['max_iter']
-        self.con_size = kwargs['con_size']
         self.walks = kwargs['walks']
         self.num_walks = len(self.walks)
         self.walk_len = len(self.walks[0])
         self.window_size = kwargs['window_size']
         self.n_workers = kwargs['n_workers']
         self.embedding = None
-
-        pass
 
     def get_method_name(self):
         return self._method_name
@@ -45,9 +43,43 @@ class Node2VecEmbedding(StaticGraphEmbedding):
         :param is_weighted: won't be used in Node2VecEmbedding
         :param no_python: won't be used in Node2VecEmbedding
         """
+        t1 = time.time()
         walks = self.walks
-        walks = [map(str, walk) for walk in walks]
+        walks = [list(map(str, walk)) for walk in walks]
         model = Word2Vec(walks, size=self.d, window=self.window_size, min_count=0
                          , sg=1, workers=self.n_workers, iter=self.max_iter)
+        t2 = time.time()
+        return
+
+def main():
+    # use random walk to sample from the graph
+    data_path = '../data/karate/karate.edgelist'
+    is_directed = False
+
+    kwargs = dict()
+    kwargs['p'] = 0.25
+    kwargs['q'] = 0.25
+    kwargs['walk_length'] = 15  # default value: 80
+    kwargs['num_walks_iter'] = 10  # default value: 10
+
+    node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+    sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()
+    print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
+    print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
+    print('number of walks: ', len(walks))
+    print('walk length: ', len(walks[0]))
+
+    # create embedding
+    kwargs = dict()
+    d = 4
+    kwargs['walks'] = walks
+    kwargs['max_iter'] = 1
+    kwargs['window_size'] = 5
+    kwargs['n_workers'] = 1
+
+    node2vec_embedding = Node2VecEmbedding(d, **kwargs)
+    node2vec_embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
 
 
+if __name__ == '__main__':
+    main()

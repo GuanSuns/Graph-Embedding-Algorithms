@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from time import time
+import os
 
 from gem.utils import graph_util, plot_util
 from gem.evaluation import visualize_embedding as viz
@@ -15,6 +16,8 @@ from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 
+from embedding.node2vec_embedding import Node2VecEmbedding
+
 
 def run_experiment():
     # use random walk to sample from the graph
@@ -25,7 +28,7 @@ def run_experiment():
     kwargs['p'] = 0.25
     kwargs['q'] = 0.25
     kwargs['walk_length'] = 15  # default value: 80
-    kwargs['num_walks'] = 10    # default value: 10
+    kwargs['num_walks_iter'] = 10    # default value: 10
 
     node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
     sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()
@@ -36,8 +39,11 @@ def run_experiment():
     # we can also save the sampled graph and the walks to file at the end
 
     # generate embedding
+    emb_dir = 'output/'
+    if not os.path.exists(emb_dir):
+        os.mkdir(emb_dir)
     # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps', 'LocallyLinearEmbedding', 'node2vec']
-    model_to_run = ['HOPE', 'node2vec']
+    model_to_run = ['node2vec']
     models = list()
 
     # Load the models you want to run
@@ -50,7 +56,7 @@ def run_experiment():
     if 'LocallyLinearEmbedding' in model_to_run:
         models.append(LocallyLinearEmbedding(d=2))
     if 'node2vec' in model_to_run:
-        models.append(node2vec(d=2, max_iter=1, walk_len=80, num_walks=10, con_size=10, ret_p=1, inout_p=1))
+        models.append(get_node2vec_model(walks))
 
     # For each model, learn the embedding and evaluate on graph reconstruction and visualization
     for embedding in models:
@@ -70,10 +76,15 @@ def run_experiment():
         plt.clf()
 
 
+def get_node2vec_model(walks):
+    kwargs = dict()
+    d = 4
+    kwargs['max_iter'] = 1
+    kwargs['walks'] = walks
+    kwargs['window_size'] = 5
+    kwargs['n_workers'] = 1
 
-
-
-
+    return Node2VecEmbedding(d, **kwargs)
 
 
 def main():

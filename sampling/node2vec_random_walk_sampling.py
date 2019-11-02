@@ -18,7 +18,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         :param G: the networkx graph
         :param sampled_size: the number of edges to be included in the sampled graph
         :param edge_file: when G is none, it will read the edgelist file
-        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' and 'num_walks'
+        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' and 'num_walks_iter'
         """
         if G is None:
             if is_direct:
@@ -28,7 +28,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
         self.G = G
         self.is_directed = is_direct
-        self.num_walks = kwargs['num_walks']
+        self.num_walks_iter = kwargs['num_walks_iter']
         self.p = kwargs['p']
         self.q = kwargs['q']
         self.walk_length = kwargs['walk_length']
@@ -39,9 +39,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
     def get_sampled_graph(self):
         self.preprocess_transition_probs()
-        return self.simulate_walks(self.walk_length, self.num_walks)
+        return self.simulate_walks(self.walk_length, self.num_walks_iter)
 
-    def simulate_walks(self, walk_length, max_number_walk=100000000):
+    def simulate_walks(self, walk_length, max_walk_iteration=100000000):
         """
         Repeatedly simulate random walks from each node.
         """
@@ -75,12 +75,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                     # update previous node
                     previous_node = current_node
 
-                walk_iter += 1
-                if walk_iter >= max_number_walk:
-                    is_stopped = True
-                    break
-
-                # print("\t- Current sampled edges: ", sampled_graph.number_of_edges())
+            walk_iter += 1
+            if walk_iter >= max_walk_iteration:
+                is_stopped = True
 
         return sampled_graph, walks
 
@@ -217,13 +214,12 @@ def alias_draw(J, q):
 def main():
     data_path = '../data/karate/karate.edgelist'
     is_directed = False
-    sampled_size = 50
 
     kwargs = dict()
     kwargs['p'] = 0.25
     kwargs['q'] = 0.25
     kwargs['walk_length'] = 15
-    kwargs['num_walks'] = 10
+    kwargs['num_walks_iter'] = 10
 
     node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
     sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()

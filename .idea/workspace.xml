@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cad39f1-dcba-4622-aa60-3919d4125daf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/lguan.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/lguan.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/embedding/node2vec_embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/embedding/node2vec_embedding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_experiment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sampling/node2vec_random_walk_sampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/sampling/node2vec_random_walk_sampling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sampling/static_graph_sampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/sampling/static_graph_sampling.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +60,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.node2vec_random_walk_sampling">
+  <component name="RunManager" selected="Python.node2vec_embedding">
     <configuration name="amazon_snap_preprocessor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Graph-Embedding-Algorithms" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,28 +83,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="blog_catalog_deepwalk_preprocessor" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Graph-Embedding-Algorithms" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_preprocessor" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_preprocessor/blog_catalog_deepwalk_preprocessor.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="live_journal_snap_preprocessor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Graph-Embedding-Algorithms" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -120,6 +97,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_preprocessor/live_journal_snap_preprocessor.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="node2vec_embedding" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Graph-Embedding-Algorithms" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/embedding" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/embedding/node2vec_embedding.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -173,19 +172,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.blog_catalog_deepwalk_preprocessor" />
       <item itemvalue="Python.amazon_snap_preprocessor" />
       <item itemvalue="Python.youtube_snap_preprocessor." />
       <item itemvalue="Python.live_journal_snap_preprocessor" />
       <item itemvalue="Python.node2vec_random_walk_sampling" />
+      <item itemvalue="Python.node2vec_embedding" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.node2vec_embedding" />
         <item itemvalue="Python.node2vec_random_walk_sampling" />
         <item itemvalue="Python.amazon_snap_preprocessor" />
         <item itemvalue="Python.live_journal_snap_preprocessor" />
         <item itemvalue="Python.youtube_snap_preprocessor." />
-        <item itemvalue="Python.blog_catalog_deepwalk_preprocessor" />
       </list>
     </recent_temporary>
   </component>
@@ -205,7 +204,7 @@
       <workItem from="1572161974698" duration="17066000" />
       <workItem from="1572474945647" duration="12414000" />
       <workItem from="1572545582345" duration="214000" />
-      <workItem from="1572648473380" duration="5561000" />
+      <workItem from="1572648473380" duration="8101000" />
     </task>
     <servers />
   </component>
@@ -233,10 +232,11 @@
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_for_run_karate_test_dataset.coverage" NAME="pytest for run_karate.test_dataset Coverage Results" MODIFIED="1571956497771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$flickr_deepwalk_preprocessor.coverage" NAME="flickr_deepwalk_preprocessor Coverage Results" MODIFIED="1572166960793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$youtube_snap_preprocessor_.coverage" NAME="youtube_snap_preprocessor. Coverage Results" MODIFIED="1572221866965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$node2vec_embedding.coverage" NAME="node2vec_embedding Coverage Results" MODIFIED="1572676248730" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/embedding" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_experiment.coverage" NAME="run_experiment Coverage Results" MODIFIED="1572121795659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$youtube_deepwalk_preprocessor.coverage" NAME="youtube_deepwalk_preprocessor Coverage Results" MODIFIED="1572166940084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$blog_catalog_deepwalk_preprocessor.coverage" NAME="blog_catalog_deepwalk_preprocessor Coverage Results" MODIFIED="1572201381330" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
-    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$node2vec_random_walk_sampling.coverage" NAME="node2vec_random_walk_sampling Coverage Results" MODIFIED="1572672056812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$node2vec_random_walk_sampling.coverage" NAME="node2vec_random_walk_sampling Coverage Results" MODIFIED="1572676201975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_in_run_karate_py.coverage" NAME="pytest in run_karate.py Coverage Results" MODIFIED="1571956403743" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_dataset.coverage" NAME="run_dataset Coverage Results" MODIFIED="1572124524415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_for_youtube_deepwalk_preprocessor_test_parser.coverage" NAME="pytest for youtube_deepwalk_preprocessor.test_parser Coverage Results" MODIFIED="1572157431677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
