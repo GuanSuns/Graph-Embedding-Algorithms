@@ -22,9 +22,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         """
         if G is None:
             if is_direct:
-                G = nx.read_edgelist(edge_file, create_using=nx.DiGraph)
+                G = nx.read_edgelist(edge_file, create_using=nx.DiGraph, nodetype=int)
             else:
-                G = nx.read_edgelist(edge_file, create_using=nx.Graph)
+                G = nx.read_edgelist(edge_file, create_using=nx.Graph, nodetype=int)
 
         self.G = G
         self.is_directed = is_direct
@@ -73,7 +73,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                 for i in range(1, len(sampled_walk)):
                     current_node = sampled_walk[i]
                     if current_node != previous_node:
-                        sampled_graph.add_edge(previous_node, current_node)
+                        sampled_graph.add_edge(previous_node, current_node, weight=self.get_edge_weight(previous_node, current_node))
                     # update previous node
                     previous_node = current_node
                 # count sampled walk

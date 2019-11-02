@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from time import time
+import networkx as nx
 import os
 
 from gem.utils import graph_util, plot_util
@@ -30,6 +31,8 @@ def run_experiment():
     print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
     print('number of walks: ', len(walks))
     print('walk length: ', len(walks[0]))
+    # make the sampled graph into directed graph as in GEM
+    sampled_graph = sampled_graph.to_directed()
     # we can also save the sampled graph and the walks to file at the end
 
     # generate embedding
@@ -53,6 +56,7 @@ def run_experiment():
         models.append(get_node2vec_model(walks))
 
     # For each model, learn the embedding and evaluate on graph reconstruction and visualization
+    print('\n\nStart learning embedding ...')
     for embedding in models:
         print('Num nodes: %d, num edges: %d' % (sampled_graph.number_of_nodes(), sampled_graph.number_of_edges()))
         t1 = time()
@@ -72,9 +76,9 @@ def run_experiment():
 
 def get_node2vec_random_walk_sampling(data_path, is_directed):
     kwargs = dict()
-    kwargs['p'] = 0.25
-    kwargs['q'] = 0.25
-    kwargs['walk_length'] = 15  # default value: 80
+    kwargs['p'] = 1
+    kwargs['q'] = 1
+    kwargs['walk_length'] = 80  # default value: 80
     # the default algorithm samples num_walks_iter walks starting for each node
     kwargs['num_walks_iter'] = 10
     # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
@@ -85,18 +89,14 @@ def get_node2vec_random_walk_sampling(data_path, is_directed):
 
 def get_node2vec_model(walks):
     kwargs = dict()
-    d = 4
+    d = 2
     kwargs['max_iter'] = 1
     kwargs['walks'] = walks
-    kwargs['window_size'] = 5
-    kwargs['n_workers'] = 1
+    kwargs['window_size'] = 10
+    kwargs['n_workers'] = 8
 
     return Node2VecEmbedding(d, **kwargs)
 
 
-def main():
-    run_experiment()
-
-
 if __name__ == '__main__':
-    main()
+    run_experiment()

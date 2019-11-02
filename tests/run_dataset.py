@@ -28,7 +28,7 @@ def try_dataset(data_path, is_directed):
 
     # List the models to try in the list.
     # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps', 'LocallyLinearEmbedding', 'node2vec']
-    model_to_try = ['HOPE', 'node2vec']
+    model_to_try = ['HOPE']
     models = list()
     # Load the models you want to run
     if 'GraphFactorization' in model_to_try:
@@ -61,7 +61,7 @@ def try_dataset(data_path, is_directed):
 
 
 def main():
-    data_path = '../data/karate.edgelist'
+    data_path = '../data/karate/karate.edgelist'
     is_directed = True
     try_dataset(data_path, is_directed)
 
