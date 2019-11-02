@@ -2,7 +2,9 @@
   <dictionary name="lguan">
     <words>
       <w>aditya</w>
+      <w>eigenmaps</w>
       <w>flickr</w>
+      <w>laplacian</w>
       <w>networkx</w>
       <w>unnormalized</w>
     </words>

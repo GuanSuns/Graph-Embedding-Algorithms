@@ -12,13 +12,13 @@ from sampling.static_graph_sampling import StaticClassSampling
 # noinspection PyMissingConstructor
 class Node2VecRandomWalkSampling(StaticClassSampling):
 
-    def __init__(self, G, edge_file, is_direct, sampled_size, args):
+    def __init__(self, G, edge_file, is_direct, **kwargs):
         """
 
         :param G: the networkx graph
         :param sampled_size: the number of edges to be included in the sampled graph
         :param edge_file: when G is none, it will read the edgelist file
-        :param args: args should be a dict which includes 'p', 'q', 'walk_length'
+        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' and 'num_walks'
         """
         if G is None:
             if is_direct:
@@ -28,10 +28,10 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
         self.G = G
         self.is_directed = is_direct
-        self.sampled_size = sampled_size
-        self.p = args['p']
-        self.q = args['q']
-        self.walk_length = args['walk_length']
+        self.num_walks = kwargs['num_walks']
+        self.p = kwargs['p']
+        self.q = kwargs['q']
+        self.walk_length = kwargs['walk_length']
 
         # variables used in functions
         self.alias_nodes = None
@@ -39,7 +39,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
     def get_sampled_graph(self):
         self.preprocess_transition_probs()
-        return self.simulate_walks(self.walk_length)
+        return self.simulate_walks(self.walk_length, self.num_walks)
 
     def simulate_walks(self, walk_length, max_number_walk=100000000):
         """
@@ -50,19 +50,21 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         else:
             sampled_graph = nx.Graph()
 
+        walks = []
         nodes = list(self.G.nodes())
         n_edges = self.G.number_of_edges()
         print("Total number of nodes: ", len(nodes))
         print("Total number of edges: ", n_edges)
 
-        print("Walk iterations:")
+        print("Start random walks ...")
         walk_iter = 0
         is_stopped = False
-        while walk_iter < max_number_walk and not is_stopped:
-            print("- Walk iteration: ", str(walk_iter + 1))
+        while not is_stopped:
             random.shuffle(nodes)
             for node in nodes:
+                # print("- Walk iteration: ", str(walk_iter + 1))
                 sampled_walk = self.node2vec_walk(walk_length=walk_length, start_node=node)
+                walks.append(sampled_walk)
                 # print(sampled_walk)
                 previous_node = sampled_walk[0]
                 # use the sampled_walk to construct the sampled_graph
@@ -73,14 +75,14 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                     # update previous node
                     previous_node = current_node
 
-                # print("\t- Current sampled edges: ", sampled_graph.number_of_edges())
-                if sampled_graph.number_of_edges() >= self.sampled_size or sampled_graph.number_of_edges() == n_edges:
+                walk_iter += 1
+                if walk_iter >= max_number_walk:
                     is_stopped = True
                     break
 
-            walk_iter += 1
+                # print("\t- Current sampled edges: ", sampled_graph.number_of_edges())
 
-        return sampled_graph
+        return sampled_graph, walks
 
     def node2vec_walk(self, walk_length, start_node):
         """
@@ -217,15 +219,18 @@ def main():
     is_directed = False
     sampled_size = 50
 
-    args = dict()
-    args['p'] = 0.25
-    args['q'] = 0.25
-    args['walk_length'] = 10
+    kwargs = dict()
+    kwargs['p'] = 0.25
+    kwargs['q'] = 0.25
+    kwargs['walk_length'] = 15
+    kwargs['num_walks'] = 10
 
-    node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, sampled_size, args)
-    sampled_graph = node2vec_random_walk_sampling.get_sampled_graph()
+    node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+    sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()
     print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
     print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
+    print('number of walks: ', len(walks))
+    print('walk length: ', len(walks[0]))
 
 
 if __name__ == '__main__':
