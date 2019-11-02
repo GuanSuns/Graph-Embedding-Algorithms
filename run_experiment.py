@@ -24,13 +24,7 @@ def run_experiment():
     data_path = 'data/karate/karate.edgelist'
     is_directed = False
 
-    kwargs = dict()
-    kwargs['p'] = 0.25
-    kwargs['q'] = 0.25
-    kwargs['walk_length'] = 15  # default value: 80
-    kwargs['num_walks_iter'] = 10    # default value: 10
-
-    node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+    node2vec_random_walk_sampling = get_node2vec_random_walk_sampling(data_path, is_directed)
     sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()
     print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
     print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
@@ -74,6 +68,19 @@ def run_experiment():
         viz.plot_embedding2D(embedding.get_embedding(), di_graph=sampled_graph, node_colors=None)
         plt.show()
         plt.clf()
+
+
+def get_node2vec_random_walk_sampling(data_path, is_directed):
+    kwargs = dict()
+    kwargs['p'] = 0.25
+    kwargs['q'] = 0.25
+    kwargs['walk_length'] = 15  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
+
+    return Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
 
 
 def get_node2vec_model(walks):

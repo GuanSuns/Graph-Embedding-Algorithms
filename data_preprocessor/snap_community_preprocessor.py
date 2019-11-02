@@ -12,6 +12,8 @@ def load_graph_from_txt(data_fname, community_fname, community_top5000_fname=Non
 
     # construct the graph
     print('Reading graph file ...')
+    node2id = dict()
+    next_available_id = 0
     with open(data_fname, 'r') as f:
         for i, line in enumerate(f):
             # show the processing progress
@@ -26,10 +28,24 @@ def load_graph_from_txt(data_fname, community_fname, community_top5000_fname=Non
                 w = float(edge[2])
             else:
                 w = 1.0
-            G.add_edge(int(edge[0]), int(edge[1]), weight=1)
+
+            edge0 = int(edge[0])
+            if edge0 not in node2id:
+                node2id[edge0] = next_available_id
+                next_available_id += 1
+            edge0 = node2id[edge0]
+
+            edge1 = int(edge[1])
+            if edge1 not in node2id:
+                node2id[edge1] = next_available_id
+                next_available_id += 1
+            edge1 = node2id[edge1]
+
+            G.add_edge(edge0, edge1, weight=1)
 
     n_node = G.number_of_nodes()
     print('\nNumber of nodes: %d, number of edges: %d' % (n_node, G.number_of_edges()))
+    print('Number of nodes in node2id dict: ', len(node2id))
 
     node_info = {'community_info': None, 'top5000_community_info': None}
     community_info = dict()
@@ -48,7 +64,7 @@ def load_graph_from_txt(data_fname, community_fname, community_top5000_fname=Non
                 nodes = line.strip().split()
                 # add community id to each node
                 for node in nodes:
-                    node_id = int(node)
+                    node_id = node2id[int(node)]
                     if node_id not in community_info:
                         community_info[node_id] = []
                     community_info[node_id].append(community_id)
@@ -68,7 +84,7 @@ def load_graph_from_txt(data_fname, community_fname, community_top5000_fname=Non
                 nodes = line.strip().split()
                 # add community id to each node
                 for node in nodes:
-                    node_id = int(node)
+                    node_id = node2id[int(node)]
                     if node_id not in top5000_community_info:
                         top5000_community_info[node_id] = []
                     top5000_community_info[node_id].append(community_id)

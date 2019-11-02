@@ -18,7 +18,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         :param G: the networkx graph
         :param sampled_size: the number of edges to be included in the sampled graph
         :param edge_file: when G is none, it will read the edgelist file
-        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' and 'num_walks_iter'
+        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' ,'num_walks_iter' and 'max_sampled_walk'
         """
         if G is None:
             if is_direct:
@@ -29,6 +29,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         self.G = G
         self.is_directed = is_direct
         self.num_walks_iter = kwargs['num_walks_iter']
+        self.max_sampled_walk = kwargs['max_sampled_walk']
         self.p = kwargs['p']
         self.q = kwargs['q']
         self.walk_length = kwargs['walk_length']
@@ -39,9 +40,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
     def get_sampled_graph(self):
         self.preprocess_transition_probs()
-        return self.simulate_walks(self.walk_length, self.num_walks_iter)
+        return self.simulate_walks(self.walk_length, self.num_walks_iter, self.max_sampled_walk)
 
-    def simulate_walks(self, walk_length, max_walk_iteration=100000000):
+    def simulate_walks(self, walk_length, max_walk_iteration, max_sampled_walk=None):
         """
         Repeatedly simulate random walks from each node.
         """
@@ -58,6 +59,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
         print("Start random walks ...")
         walk_iter = 0
+        n_sampled_walk = 0
         is_stopped = False
         while not is_stopped:
             random.shuffle(nodes)
@@ -74,10 +76,16 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                         sampled_graph.add_edge(previous_node, current_node)
                     # update previous node
                     previous_node = current_node
+                # count sampled walk
+                n_sampled_walk += 1
+                if max_sampled_walk is not None and n_sampled_walk >= max_sampled_walk:
+                    is_stopped = True
+                    break
 
             walk_iter += 1
             if walk_iter >= max_walk_iteration:
                 is_stopped = True
+                break
 
         return sampled_graph, walks
 
@@ -211,7 +219,7 @@ def alias_draw(J, q):
         return J[kk]
 
 
-def main():
+def run_test():
     data_path = '../data/karate/karate.edgelist'
     is_directed = False
 
@@ -219,7 +227,10 @@ def main():
     kwargs['p'] = 0.25
     kwargs['q'] = 0.25
     kwargs['walk_length'] = 15
+    # the default algorithm samples num_walks_iter walks starting for each node
     kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
 
     node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
     sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()
@@ -228,6 +239,8 @@ def main():
     print('number of walks: ', len(walks))
     print('walk length: ', len(walks[0]))
 
+    return sampled_graph, walks
+
 
 if __name__ == '__main__':
-    main()
+    run_test()
