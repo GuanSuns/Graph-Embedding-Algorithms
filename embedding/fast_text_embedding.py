@@ -1,5 +1,5 @@
 from gem.embedding.static_graph_embedding import StaticGraphEmbedding
-from gensim.models import Word2Vec
+from gensim.models import FastText
 import numpy as np
 import time
 
@@ -8,7 +8,7 @@ from embedding import embedding_utils
 
 
 # noinspection PyMissingConstructor
-class Node2VecEmbedding(StaticGraphEmbedding):
+class FastTextEmbedding(StaticGraphEmbedding):
 
     def __init__(self, d, **kwargs):
         """
@@ -19,7 +19,7 @@ class Node2VecEmbedding(StaticGraphEmbedding):
             max_iter: max number of iterations
             n_workers: number of parallel workers
         """
-        self._method_name = 'Node2Vec-Embedding'
+        self._method_name = 'FastText-Embedding'
         self.d = d
         self.max_iter = kwargs['max_iter']
         self.walks = kwargs['walks']
@@ -41,16 +41,16 @@ class Node2VecEmbedding(StaticGraphEmbedding):
         Return the learned embedding. This class only implements the embedding creating part
         of the node2vec, so it only takes the walks (list) in the kwargs as argument
 
-        :param graph: won't be used in Node2VecEmbedding
-        :param edge_f: won't be used in Node2VecEmbedding
-        :param is_weighted: won't be used in Node2VecEmbedding
-        :param no_python: won't be used in Node2VecEmbedding
+        :param graph: won't be used in FastTextEmbedding
+        :param edge_f: won't be used in FastTextEmbedding
+        :param is_weighted: won't be used in FastTextEmbedding
+        :param no_python: won't be used in FastTextEmbedding
         """
         t1 = time.time()
         walks = self.walks
         walks = [list(map(str, walk)) for walk in walks]
-        # sg = 1 means SkipGram otherwise CBOW
-        model = Word2Vec(walks, size=self.d, window=self.window_size, min_count=0
+
+        model = FastText(sentences=walks, size=self.d, window=self.window_size, min_count=0
                          , sg=1, workers=self.n_workers, iter=self.max_iter)
         self.embedding = embedding_utils.gensim_model_to_embedding(model, walks)
         self._node_num = self.embedding.shape[0]
@@ -76,23 +76,3 @@ class Node2VecEmbedding(StaticGraphEmbedding):
                     continue
                 adj_mtx_r[v_i, v_j] = self.get_edge_weight(v_i, v_j)
         return adj_mtx_r
-
-
-def run_test():
-    # use random walk to sample from the graph
-    sampled_graph, walks = node2vec_random_walk_sampling.run_test()
-
-    # create embedding
-    kwargs = dict()
-    d = 4
-    kwargs['walks'] = walks
-    kwargs['max_iter'] = 1
-    kwargs['window_size'] = 5
-    kwargs['n_workers'] = 1
-
-    node2vec_embedding = Node2VecEmbedding(d, **kwargs)
-    node2vec_embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
-
-
-if __name__ == '__main__':
-    run_test()

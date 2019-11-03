@@ -17,6 +17,7 @@ from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 from embedding.node2vec_embedding import Node2VecEmbedding
+from embedding.fast_text_embedding import FastTextEmbedding
 from embedding import embedding_utils
 
 
@@ -39,8 +40,8 @@ def run_experiment():
     emb_dir = 'output/'
     if not os.path.exists(emb_dir):
         os.mkdir(emb_dir)
-    # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps', 'LocallyLinearEmbedding', 'node2vec']
-    model_to_run = ['node2vec']
+    # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps', 'LocallyLinearEmbedding', 'node2vec', 'FastText']
+    model_to_run = ['FastText', 'node2vec']
     models = list()
 
     # Load the models you want to run
@@ -54,6 +55,8 @@ def run_experiment():
         models.append(LocallyLinearEmbedding(d=2))
     if 'node2vec' in model_to_run:
         models.append(get_node2vec_model(walks))
+    if 'FastText' in model_to_run:
+        models.append(get_fast_text_model(walks))
 
     # For each model, learn the embedding and evaluate on graph reconstruction and visualization
     print('\n\nStart learning embedding ...')
@@ -97,6 +100,17 @@ def get_node2vec_model(walks):
     kwargs['n_workers'] = 8
 
     return Node2VecEmbedding(d, **kwargs)
+
+
+def get_fast_text_model(walks):
+    kwargs = dict()
+    d = 2
+    kwargs['max_iter'] = 1
+    kwargs['walks'] = walks
+    kwargs['window_size'] = 10
+    kwargs['n_workers'] = 8
+
+    return FastTextEmbedding(d, **kwargs)
 
 
 if __name__ == '__main__':
