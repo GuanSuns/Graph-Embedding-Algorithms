@@ -19,3 +19,28 @@ def gensim_model_to_embedding(model, walks):
         embedding[int(node), :] = model.wv[str(node)]
 
     return embedding
+
+
+def save_embedding_to_file(embedding, fname):
+    """
+    Save the embeddings to local file
+    :param embedding: matrix (or 2d-array) with the format (n_node, dimension)
+    :param fname: file to store embedding
+    """
+    n_node = embedding.shape[0]
+    d = embedding.shape[1]
+
+    with open(fname, 'w') as f:
+        # write header (meta data)
+        line = str(n_node) + ' ' + str(d)
+        f.write('%s\n' % (line,))
+
+        for node_id in range(0, n_node):
+            line = str(node_id)
+            for d_index in range(0, d):
+                line += ' '
+                line += str(embedding[node_id][d_index])
+            f.write('%s\n' % (line, ))
+
+
+

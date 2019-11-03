@@ -16,8 +16,8 @@ from gem.embedding.sdne import SDNE
 from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
-
 from embedding.node2vec_embedding import Node2VecEmbedding
+from embedding import embedding_utils
 
 
 def run_experiment():
@@ -61,10 +61,11 @@ def run_experiment():
         print('Num nodes: %d, num edges: %d' % (sampled_graph.number_of_nodes(), sampled_graph.number_of_edges()))
         t1 = time()
         # Learn embedding - accepts a networkx graph or file with edge list
-        Y, t = embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
+        learned_embedding, t = embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
+        embedding_utils.save_embedding_to_file(learned_embedding, emb_dir+embedding.get_method_name()+'.emb')
         print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time() - t1))
         # Evaluate on graph reconstruction
-        MAP, prec_curv, err, err_baseline = gr.evaluateStaticGraphReconstruction(sampled_graph, embedding, Y, None)
+        MAP, prec_curv, err, err_baseline = gr.evaluateStaticGraphReconstruction(sampled_graph, embedding, learned_embedding, None)
         # ---------------------------------------------------------------------------------
         print(("\tMAP: {} \t precision curve: {}\n\n\n\n" + '-' * 100).format(MAP, prec_curv[:5]))
         # ---------------------------------------------------------------------------------
