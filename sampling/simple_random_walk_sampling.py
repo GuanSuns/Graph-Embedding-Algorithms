@@ -22,15 +22,20 @@ class SimpleRandomWalkSampling(StaticClassSampling):
         """
         if G is None:
             if is_direct:
-                G = nx.read_edgelist(edge_file, create_using=nx.DiGraph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.DiGraph, nodetype=int)
             else:
-                G = nx.read_edgelist(edge_file, create_using=nx.Graph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.Graph, nodetype=int)
 
         self.G = G
         self.is_directed = is_direct
         self.num_walks_iter = kwargs['num_walks_iter']
         self.max_sampled_walk = kwargs['max_sampled_walk']
         self.walk_length = kwargs['walk_length']
+
+        self.name = 'sample-random-walk'
+
+    def get_name(self):
+        return self.name
 
     def get_sampled_graph(self):
         return self.simulate_walks(self.walk_length, self.num_walks_iter, self.max_sampled_walk)

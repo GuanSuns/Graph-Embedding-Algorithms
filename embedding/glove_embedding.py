@@ -1,30 +1,24 @@
+import importlib
+import numpy as np
+import time
+import platform
+import os
+from gensim.scripts.glove2word2vec import glove2word2vec
+from gensim.models import KeyedVectors
+
 import matplotlib.pyplot as plt
-from time import time
 import networkx as nx
 import os
-from datetime import datetime
 import importlib
 import platform
 
-from gem.utils import graph_util, plot_util
-from gem.evaluation import visualize_embedding as viz
-from gem.evaluation import evaluate_graph_reconstruction as gr
-
-from gem.embedding.gf import GraphFactorization
-from gem.embedding.hope import HOPE
-from gem.embedding.lap import LaplacianEigenmaps
-from gem.embedding.lle import LocallyLinearEmbedding
-from gem.embedding.node2vec import node2vec
-from gem.embedding.sdne import SDNE
-from argparse import ArgumentParser
-
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
-from embedding.node2vec_embedding import Node2VecEmbedding
-from embedding.fast_text_embedding import FastTextEmbedding
-from embedding.glove_embedding import GloveEmbedding
-from embedding.cbow_embedding import CBOWEmbedding
+
 from embedding import embedding_utils
-from sampling import sampling_utils
+
+sampling = None
+sampling_utils = None
+
 
 glove = None
 Glove = None
@@ -37,6 +31,86 @@ except Exception:
 if glove is not None:
     Glove = getattr(glove, 'Glove')
     Corpus = getattr(glove, 'Corpus')
+
+
+class GloveEmbedding:
+
+    def __init__(self, d, **kwargs):
+        """
+        The initializer of the Node2VecEmbedding class
+        :param kwargs: a dict contains:
+            d: dimension of the embedding
+            window_size: context size for optimization
+            max_iter: max number of iterations
+            n_workers: number of parallel workers
+        """
+        self._method_name = 'GloVe-Embedding'
+        self.d = d
+        self.max_iter = kwargs['max_iter']
+        self.walks = kwargs['walks']
+        self.window_size = kwargs['window_size']
+        self.n_workers = kwargs['n_workers']
+        self.learning_rate = kwargs['learning_rate']
+        self.verbose = kwargs['verbose']
+        self.embedding = None
+        self._node_num = None
+    
+    def get_method_name(self):
+        return self._method_name
+
+    def get_method_summary(self):
+        return '%s_%d' % (self._method_name, self.d)
+
+    def get_embedding(self):
+        return self.embedding
+
+    def get_edge_weight(self, i, j):
+        return np.dot(self.embedding[i, :], self.embedding[j, :])
+
+    def learn_embedding(self, graph=None, edge_f=None, is_weighted=False, no_python=False):
+        t1 = time.time()
+        walks = self.walks
+
+        # crete the Corpus from the walks
+        walks = [list(map(str, walk)) for walk in walks]
+        corpus_model = Corpus()
+        corpus_model.fit(walks, window=self.window_size)
+
+        dictionary = corpus_model.dictionary
+        print('Dict size: %s' % len(dictionary))
+        self._node_num = len(corpus_model.dictionary)
+        print('Collocations: %s' % corpus_model.matrix.nnz)
+
+        # train the glove model
+        glove_model = Glove(no_components=self.d, learning_rate=self.learning_rate)
+        glove_model.fit(corpus_model.matrix, epochs=int(self.max_iter), no_threads=self.n_workers, verbose=self.verbose)
+        glove_model.add_dictionary(dictionary)
+
+        # generate the embedding
+        word_vectors = glove_model.word_vectors
+        embedding = np.zeros((self._node_num, self.d))
+        for node_i in range(0, self._node_num):
+            node_word_id = dictionary[str(node_i)]
+            embedding[node_i, :] = word_vectors[node_word_id]
+        self.embedding = embedding
+
+        t2 = time.time()
+
+        return self.embedding, t2-t1
+
+    def get_reconstructed_adj(self, X=None, node_l=None):
+        if X is not None:
+            node_num = X.shape[0]
+            self.embedding = X
+        else:
+            node_num = self._node_num
+        adj_mtx_r = np.zeros((node_num, node_num))
+        for v_i in range(node_num):
+            for v_j in range(node_num):
+                if v_i == v_j:
+                    continue
+                adj_mtx_r[v_i, v_j] = self.get_edge_weight(v_i, v_j)
+        return adj_mtx_r
 
 
 def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
@@ -53,7 +127,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         sampled_graph, walks = random_walk_sampling.get_sampled_graph()
         # save to local file
         if is_save_walks:
-            fname = random_walk_sampling.get_name() + '-' + str(datetime.timestamp(datetime.now()))
+            fname = random_walk_sampling.get_name() + '-' + str(time.time())
             walks_dir = './sampled_walks/'
             if not os.path.exists(walks_dir):
                 os.mkdir(walks_dir)
@@ -69,49 +143,28 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     # we can also save the sampled graph and the walks to file at the end
 
     # generate embedding
-    emb_dir = 'output/'
+    emb_dir = '../output/'
     if not os.path.exists(emb_dir):
         os.mkdir(emb_dir)
     emb_dir += (data_name + '/')
     if not os.path.exists(emb_dir):
         os.mkdir(emb_dir)
-    # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps'
-    # , 'LocallyLinearEmbedding', 'node2vec' , 'FastText', 'CBOW', 'Glove']
-    model_to_run = ['node2vec', 'FastText']
-    models = list()
 
-    # Load the models you want to run
-    if 'GraphFactorization' in model_to_run:
-        models.append(GraphFactorization(d=128, max_iter=1000, eta=1 * 10 ** -4, regu=1.0))
-    if 'HOPE' in model_to_run:
-        models.append(HOPE(d=256, beta=0.01))
-    if 'LaplacianEigenmaps' in model_to_run:
-        models.append(LaplacianEigenmaps(d=128))
-    if 'LocallyLinearEmbedding' in model_to_run:
-        models.append(LocallyLinearEmbedding(d=128))
-    if 'node2vec' in model_to_run:
-        models.append(get_node2vec_model(walks))
-    if 'FastText' in model_to_run:
-        models.append(get_fast_text_model(walks))
-    if 'CBOW' in model_to_run:
-        models.append(get_cbow_model(walks))
-    if 'Glove' in model_to_run and glove is not None:
+    models = list()
+    if glove is not None:
         models.append(get_glove_model(walks))
 
     # For each model, learn the embedding and evaluate on graph reconstruction and visualization
     print('\n\nStart learning embedding ...')
+    print('Num nodes: %d, num edges: %d' % (sampled_graph.number_of_nodes(), sampled_graph.number_of_edges()))
     for embedding in models:
-        print('Num nodes: %d, num edges: %d' % (sampled_graph.number_of_nodes(), sampled_graph.number_of_edges()))
-        t1 = time()
+        print('\nLearning embedding using %s ...' % (embedding.get_method_name(),))
+        t1 = time.time()
         # Learn embedding - accepts a networkx graph or file with edge list
         learned_embedding, t = embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
         # Save embedding to file
         embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + data_name + '_' + embedding.get_method_name() + '.emb')
-        print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time() - t1))
-        # Evaluate on graph reconstruction
-        MAP, prec_curv, err, err_baseline = gr.evaluateStaticGraphReconstruction(sampled_graph, embedding, learned_embedding, None)
-        # ---------------------------------------------------------------------------------
-        print(("\tMAP: {} \t precision curve: {}\n\n\n\n" + '-' * 100).format(MAP, prec_curv[:5]))
+        print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time.time() - t1))
 
 
 def get_node2vec_random_walk_sampling(data_path, is_directed):
@@ -123,60 +176,25 @@ def get_node2vec_random_walk_sampling(data_path, is_directed):
     kwargs['num_walks_iter'] = 10
     # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
     kwargs['max_sampled_walk'] = None
-    # use c executable as default
-    kwargs['is_use_python'] = False
-    kwargs['node2vec_c_executable'] = 'node2vec'
 
     return Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
 
 
-def get_node2vec_model(walks):
-    kwargs = dict()
-    d = 128
-    kwargs['max_iter'] = 1
-    kwargs['walks'] = walks
-    kwargs['window_size'] = 10
-    kwargs['n_workers'] = 8
-
-    return Node2VecEmbedding(d, **kwargs)
-
-
-def get_fast_text_model(walks):
-    kwargs = dict()
-    d = 128
-    kwargs['max_iter'] = 1
-    kwargs['walks'] = walks
-    kwargs['window_size'] = 10
-    kwargs['n_workers'] = 8
-
-    return FastTextEmbedding(d, **kwargs)
-
-
-def get_cbow_model(walks):
-    kwargs = dict()
-    d = 2
-    kwargs['max_iter'] = 1
-    kwargs['walks'] = walks
-    kwargs['window_size'] = 10
-    kwargs['n_workers'] = 8
-    return CBOWEmbedding(d, **kwargs)
-
-
 def get_glove_model(walks):
     kwargs = dict()
-    d = 2
-    kwargs['max_iter'] = 1
+    d = 128
+    kwargs['max_iter'] = 5
     kwargs['walks'] = walks
     kwargs['window_size'] = 10
-    kwargs['n_workers'] = 5
+    kwargs['n_workers'] = 4
     kwargs['learning_rate'] = 0.05
-    kwargs['num_threads'] = 4
+    kwargs['verbose'] = False
     return GloveEmbedding(d, **kwargs)
 
 
 if __name__ == '__main__':
-    data_list = ['data/flickr-deepwalk/flickr-deepwalk.edgelist']
-    sampled_walks_list = [None]
+    data_list = ['../data/blog-catalog-deepwalk/blog-catalog.edgelist']
+    sampled_walks_list = ['../sampled_walks/blog-catalog/node2vec-random-walk-1573955197.082777.txt']
     is_save_walks_list = [True]
 
     for i in range(0, len(data_list)):

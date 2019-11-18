@@ -2,11 +2,16 @@
 # -----------------------------------------
 # Implement the random walk sampling used in Node2Vec
 # The implementation is based on Aditya Grover's code: https://github.com/aditya-grover/node2vec
-
+import os
 import networkx as nx
+import sys
 import numpy as np
 import random
+import time
+
 from sampling.static_graph_sampling import StaticClassSampling
+from sampling import sampling_utils
+from subprocess import call
 
 
 # noinspection PyMissingConstructor
@@ -18,29 +23,91 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         :param G: the networkx graph
         :param sampled_size: the number of edges to be included in the sampled graph
         :param edge_file: when G is none, it will read the edgelist file
-        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length' ,'num_walks_iter' and 'max_sampled_walk'
+        :param kwargs: args should be a dict which includes 'p', 'q', 'walk_length'
+                    ,'num_walks_iter', 'max_sampled_walk'
+                    , 'is_use_python', 'node2vec_c_executable'
         """
         if G is None:
             if is_direct:
-                G = nx.read_edgelist(edge_file, create_using=nx.DiGraph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.DiGraph, nodetype=int)
             else:
-                G = nx.read_edgelist(edge_file, create_using=nx.Graph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.Graph, nodetype=int)
 
         self.G = G
+        self.is_weighted = self.is_graph_weighted()
+        self.edge_file = edge_file
         self.is_directed = is_direct
         self.num_walks_iter = kwargs['num_walks_iter']
         self.max_sampled_walk = kwargs['max_sampled_walk']
         self.p = kwargs['p']
         self.q = kwargs['q']
         self.walk_length = kwargs['walk_length']
+        # use python implementation or C implementation
+        self.is_use_python = True
+        if 'is_use_python' in kwargs:
+            self.is_use_python = kwargs['is_use_python']
+        # the command to run node2vec using C executable from snap
+        self.node2vec_c_executable = None
+        if 'node2vec_c_executable' in kwargs:
+            self.node2vec_c_executable = kwargs['node2vec_c_executable']
 
         # variables used in functions
         self.alias_nodes = None
         self.alias_edges = None
 
+        self.name = 'node2vec-random-walk'
+
+    def get_name(self):
+        return self.name
+
+    def is_graph_weighted(self):
+        G = self.G
+        for node in G.nodes:
+            for neighbor in G.neighbors(node):
+                if 'weight' not in G[node][neighbor]:
+                    return False
+                else:
+                    return True
+
     def get_sampled_graph(self):
+        if not self.is_use_python:
+            walks = self.simulate_walks_c_executable()
+            if walks is not None:
+                return self.G, walks
+
         self.preprocess_transition_probs()
         return self.simulate_walks(self.walk_length, self.num_walks_iter, self.max_sampled_walk)
+
+    def simulate_walks_c_executable(self):
+        temp_file = 'temp_walks-' + str(time.time()) + '.txt'
+        # noinspection PyListCreation
+        args = [self.node2vec_c_executable]
+        args.append('-i:' + self.edge_file)
+        args.append('-o:' + temp_file)
+        args.append('-l:%d' % self.walk_length)
+        args.append('-r:%d' % self.num_walks_iter)
+        args.append('-p:%f' % self.p)
+        args.append('-q:%f' % self.q)
+        if self.is_directed:
+            args.append('-dr')
+        if self.is_weighted:
+            args.append('-w')
+        args.append('-ow')
+        args.append('-v')
+
+        try:
+            print(args)
+            call(args)
+        except Exception as e:
+            print(str(e))
+            print(self.node2vec_c_executable + ' not found. Please compile snap, place node2vec in the system path and grant executable permission')
+            return None
+
+        # read the walks from the file
+        walks = sampling_utils.load_sampled_walks(temp_file)
+        os.remove(temp_file)
+
+        return walks
 
     def simulate_walks(self, walk_length, max_walk_iteration, max_sampled_walk=None):
         """
@@ -54,7 +121,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         walks = []
         nodes = list(self.G.nodes())
         n_edges = self.G.number_of_edges()
-        print("Total number of nodes: ", len(nodes))
+        print("\nTotal number of nodes: ", len(nodes))
         print("Total number of edges: ", n_edges)
 
         print("Start random walks ...")
@@ -63,11 +130,14 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         is_stopped = False
         while not is_stopped:
             random.shuffle(nodes)
-            for node in nodes:
-                # print("- Walk iteration: ", str(walk_iter + 1))
+            for i_node, node in enumerate(nodes):
+                sys.stdout.write('\r')
+                sys.stdout.write('Sampling from node %d' % (i_node,))
+                sys.stdout.flush()
+
                 sampled_walk = self.node2vec_walk(walk_length=walk_length, start_node=node)
                 walks.append(sampled_walk)
-                # print(sampled_walk)
+
                 previous_node = sampled_walk[0]
                 # use the sampled_walk to construct the sampled_graph
                 for i in range(1, len(sampled_walk)):
@@ -87,6 +157,7 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
                 is_stopped = True
                 break
 
+        print('\nFinish sampling ...')
         return sampled_graph, walks
 
     def node2vec_walk(self, walk_length, start_node):
@@ -142,8 +213,15 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         G = self.G
         is_directed = self.is_directed
 
+        print('Node2Vec Random Walk preprocessing probs ...')
+        print('\tStart processing nodes: ', G.number_of_nodes())
+
         alias_nodes = {}
-        for node in G.nodes():
+        for i_node, node in enumerate(G.nodes()):
+            sys.stdout.write('\r')
+            sys.stdout.write('\tProcessing node %d' % (i_node,))
+            sys.stdout.flush()
+
             unnormalized_probs = [self.get_edge_weight(node, nbr) for nbr in sorted(G.neighbors(node))]
             norm_const = sum(unnormalized_probs)
             normalized_probs = [float(u_prob) / norm_const for u_prob in unnormalized_probs]
@@ -152,11 +230,18 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         alias_edges = {}
         triads = {}
 
+        print('\n\tStart processing edges: ', G.number_of_edges())
         if is_directed:
-            for edge in G.edges():
+            for i_edge, edge in enumerate(G.edges()):
+                sys.stdout.write('\r')
+                sys.stdout.write('\tProcessing edge %d' % (i_edge,))
+                sys.stdout.flush()
                 alias_edges[edge] = self.get_alias_edge(edge[0], edge[1])
         else:
-            for edge in G.edges():
+            for i_edge, edge in enumerate(G.edges()):
+                sys.stdout.write('\r')
+                sys.stdout.write('\tProcessing edge %d' % (i_edge,))
+                sys.stdout.flush()
                 alias_edges[edge] = self.get_alias_edge(edge[0], edge[1])
                 alias_edges[(edge[1], edge[0])] = self.get_alias_edge(edge[1], edge[0])
 
@@ -226,11 +311,13 @@ def run_test():
     kwargs = dict()
     kwargs['p'] = 0.25
     kwargs['q'] = 0.25
-    kwargs['walk_length'] = 15
+    kwargs['walk_length'] = 80
     # the default algorithm samples num_walks_iter walks starting for each node
     kwargs['num_walks_iter'] = 10
     # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
     kwargs['max_sampled_walk'] = None
+    kwargs['is_use_python'] = False
+    kwargs['node2vec_c_executable'] = 'node2vec'
 
     node2vec_random_walk_sampling = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
     sampled_graph, walks = node2vec_random_walk_sampling.get_sampled_graph()

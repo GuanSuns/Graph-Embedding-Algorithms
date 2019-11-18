@@ -2,6 +2,7 @@
   <dictionary name="lguan">
     <words>
       <w>aditya</w>
+      <w>cbow</w>
       <w>eigenmaps</w>
       <w>flickr</w>
       <w>gensim</w>
