@@ -1,0 +1,52 @@
+# Embeddings
+
+## Setting 1
+- Sampled walks: node2vec-random-walk-1574042236.322876.txt
+    - Number of dimensions. Default is 128 (-d:)=128
+    - Length of walk per source. Default is 80 (-l:)=80
+    - Number of walks per source. Default is 10 (-r:)=10
+    - Context size for optimization. Default is 10 (-k:)=10
+    - Number of epochs in SGD. Default is 1 (-e:)=1
+    - Return hyper-parameter. Default is 1 (-p:)=1
+    - Inout hyper-parameter. Default is 1 (-q:)=1
+- CBOW
+    - embedding: sbm_CBOW-Embedding_1574119501.956939.emb
+        - d = 128
+        - kwargs[\'max\_iter\'] = 1
+        - kwargs[\'walks\'] = walks
+        - kwargs[\'window\_size\'] = 10
+        - kwargs[\'n\_workers\'] = 5
+- FastText
+    - embedding: sbm_FastText-Embedding_1574119487.8704846.emb
+        - d = 128
+        - kwargs[\'max\_iter\'] = 1
+        - kwargs[\'walks\'] = walks
+        - kwargs[\'window\_size\'] = 10
+        - kwargs[\'n\_workers\'] = 5
+- Node2Vec
+    - embedding: sbm_Node2Vec-Embedding_1574119485.4161851.emb
+        - d = 128
+        - kwargs[\'max\_iter\'] = 1
+        - kwargs[\'walks\'] = walks
+        - kwargs[\'window\_size\'] = 10
+        - kwargs[\'n\_workers\'] = 5
+- Glove
+     - embedding: sbm_GloVe-Embedding_1574119699.21.emb
+        - d = 128
+        - kwargs[\'max\_iter\'] = 5
+        - kwargs[\'walks\'] = walks
+        - kwargs[\'window\_size\'] = 10
+        - kwargs[\'n\_workers\'] = 5
+- HOPE
+    - embedding: 
+        - HOPE(d=128, beta=0.01)
+- LaplacianEigenmaps
+    - embedding: 
+        - LaplacianEigenmaps(d=128)
+- LocallyLinearEmbedding
+    - embedding: sbm_lle_svd_1574119502.7862644.emb
+        - LocallyLinearEmbedding(d=128)
+- GraphFactorization
+    - embedding: 
+        - GraphFactorization(d=128, max_iter=1000, eta=1 * 10 ** -4, regu=1.0)
+  

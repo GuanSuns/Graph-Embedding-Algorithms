@@ -15,9 +15,7 @@ import platform
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 
 from embedding import embedding_utils
-
-sampling = None
-sampling_utils = None
+from sampling import sampling_utils
 
 
 glove = None
@@ -120,7 +118,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     is_directed = False
 
     if sampled_walk_file is not None:
-        sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph, nodetype=int)
+        sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
         walks = sampling_utils.load_sampled_walks(sampled_walk_file)
     else:
         random_walk_sampling = get_node2vec_random_walk_sampling(data_path, is_directed)
@@ -163,7 +161,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         # Learn embedding - accepts a networkx graph or file with edge list
         learned_embedding, t = embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
         # Save embedding to file
-        embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + data_name + '_' + embedding.get_method_name() + '.emb')
+        embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + data_name + '_' + embedding.get_method_name() + '_' + str(t1) + '.emb')
         print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time.time() - t1))
 
 
@@ -186,16 +184,18 @@ def get_glove_model(walks):
     kwargs['max_iter'] = 5
     kwargs['walks'] = walks
     kwargs['window_size'] = 10
-    kwargs['n_workers'] = 4
+    kwargs['n_workers'] = 5
     kwargs['learning_rate'] = 0.05
     kwargs['verbose'] = False
     return GloveEmbedding(d, **kwargs)
 
 
 if __name__ == '__main__':
-    data_list = ['../data/blog-catalog-deepwalk/blog-catalog.edgelist']
-    sampled_walks_list = ['../sampled_walks/blog-catalog/node2vec-random-walk-1573955197.082777.txt']
-    is_save_walks_list = [True]
+    # candidate: ['../data/blog-catalog-deepwalk/blog-catalog.edgelist', '../data/flickr-deepwalk/flickr-deepwalk.edgelist', '../data/sbm/sbm.edgelist']
+    data_list = ['../data/sbm/sbm.edgelist']
+    # candidate: ['../sampled_walks/blog-catalog/node2vec-random-walk-1574042236.322876.txt', '../sampled_walks/flickr-deepwalk/node2vec-random-walk-1574063574.331607.txt', '../sampled_walks/sbm/node2vec-random-walk-1574119485.050326.txt']
+    sampled_walks_list = ['../sampled_walks/sbm/node2vec-random-walk-1574119485.050326.txt']
+    is_save_walks_list = [False]
 
     for i in range(0, len(data_list)):
         print('Run experiment using dataset: ' + data_list[i])

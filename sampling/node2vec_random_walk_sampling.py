@@ -29,9 +29,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
         """
         if G is None:
             if is_direct:
-                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.DiGraph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.DiGraph(), nodetype=int)
             else:
-                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.Graph, nodetype=int)
+                G = nx.read_edgelist(edge_file, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
 
         self.G = G
         self.is_weighted = self.is_graph_weighted()
