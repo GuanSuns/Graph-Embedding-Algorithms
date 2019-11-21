@@ -4,9 +4,6 @@
     <list default="true" id="9cad39f1-dcba-4622-aa60-3919d4125daf" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sampling/biased_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/sampling/biased_walk.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -208,7 +205,7 @@
       <workItem from="1572545582345" duration="214000" />
       <workItem from="1572648473380" duration="26966000" />
       <workItem from="1573872426815" duration="10614000" />
-      <workItem from="1573928269978" duration="19249000" />
+      <workItem from="1573928269978" duration="19332000" />
     </task>
     <servers />
   </component>
