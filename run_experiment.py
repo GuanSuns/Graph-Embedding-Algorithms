@@ -21,6 +21,7 @@ from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 from sampling.simple_random_walk_sampling import SimpleRandomWalkSampling
+from sampling.biased_walk import BiasedWalk
 from embedding.node2vec_embedding import Node2VecEmbedding
 from embedding.fast_text_embedding import FastTextEmbedding
 from embedding.glove_embedding import GloveEmbedding
@@ -49,13 +50,15 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
 
     # define sampling strategy
     # choose from ['node2vec', 'simple_random_walk', 'biased-walk']
-    sampling_strategy = 'simple_random_walk'
+    sampling_strategy = 'biased-walk'
     sampling_method = None
     if sampled_walk_file is None:
         if sampling_strategy == 'node2vec':
             sampling_method = get_node2vec_random_walk_sampling(data_path, is_directed)
         elif sampling_strategy == 'simple_random_walk':
             sampling_method = get_simple_random_walk_sampling(data_path, is_directed)
+        elif sampling_strategy == 'biased-walk':
+            sampling_method = get_biased_walk(data_path, is_directed)
 
     if sampled_walk_file is not None:
         sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
@@ -145,8 +148,9 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
 
 def get_node2vec_random_walk_sampling(data_path, is_directed):
     kwargs = dict()
-    kwargs['p'] = 1
-    kwargs['q'] = 1
+    # ppi recommended: p=4, q=1; blog dataset recommended: p=q=0.25
+    kwargs['p'] = 0.25
+    kwargs['q'] = 0.25
     kwargs['walk_length'] = 80  # default value: 80
     # the default algorithm samples num_walks_iter walks starting for each node
     kwargs['num_walks_iter'] = 10
@@ -167,7 +171,33 @@ def get_simple_random_walk_sampling(data_path, is_directed):
     # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
     kwargs['max_sampled_walk'] = None
 
-    return SimpleRandomWalkSampling(None, data_path, is_directed, **kwargs)
+    # use c executable as default
+    kwargs['is_use_python'] = False
+
+    # the biased walk with q=1 and p=1 in node2vec is simple random walk
+    if not kwargs['is_use_python']:
+        kwargs['node2vec_c_executable'] = 'node2vec'
+        kwargs['p'] = 1
+        kwargs['q'] = 1
+        kwargs['max_sampled_walk'] = None
+        sampling_model = Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+        sampling_model.name = 'simple_random_walk'
+        return sampling_model
+    else:
+        return SimpleRandomWalkSampling(None, data_path, is_directed, **kwargs)
+
+
+def get_biased_walk(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
+    kwargs['i_value'] = 1.0  # the initialization value of phenomenon
+    kwargs['is_bfs'] = False
+
+    return BiasedWalk(None, data_path, is_directed, **kwargs)
 
 
 def get_node2vec_model(walks):
@@ -215,7 +245,7 @@ def get_glove_model(walks):
 
 if __name__ == '__main__':
     # candidate: ['./data/PPI/ppi.edgelist', './data/blog-catalog-deepwalk/blog-catalog.edgelist', './data/flickr-deepwalk/flickr-deepwalk.edgelist', './data/sbm/sbm.edgelist']
-    data_list = ['./data/PPI/ppi.edgelist']
+    data_list = ['./data/blog-catalog-deepwalk/blog-catalog.edgelist']
     # candidate: ['./sampled_walks/blog-catalog/node2vec-random-walk-1574042236.322876.txt', './sampled_walks/flickr-deepwalk/node2vec-random-walk-1574063574.331607.txt']
     sampled_walks_list = [None]
     is_save_walks_list = [True]

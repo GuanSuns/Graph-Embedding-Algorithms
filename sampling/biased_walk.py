@@ -32,6 +32,7 @@ class BiasedWalk(StaticClassSampling):
         self.is_directed = is_direct
         self.num_walks_iter = kwargs['num_walks_iter']
         self.walk_length = kwargs['walk_length']
+        self.i_value = kwargs['i_value']  # the initialization value of phenomenon
         self.is_bfs = kwargs['is_bfs']
         if self.is_bfs:
             self.name = 'biased-random-walk-bfs'
@@ -40,11 +41,12 @@ class BiasedWalk(StaticClassSampling):
 
         additions = [1.0]
         for i in range(self.walk_length):
-            additions.append(i_value * additions[i])
+            additions.append(self.i_value * additions[i])
         self.additions = additions
 
-def get_description(self):
-        return {'name': self.get_name(), 'walk_length': self.walk_length, 'num_walks_iter': self.num_walks_iter, 'is_bfs': self.is_bfs}
+    def get_description(self):
+        return {'name': self.get_name(), 'walk_length': self.walk_length, 'num_walks_iter': self.num_walks_iter,
+                'is_bfs': self.is_bfs, 'i_value': self.i_value}
 
     def get_name(self):
         return self.name
@@ -56,11 +58,6 @@ def get_description(self):
         """
         Repeatedly simulate random walks from each node.
         """
-        if self.is_directed:
-            sampled_graph = nx.DiGraph()
-        else:
-            sampled_graph = nx.Graph()
-
         walks = []
         nodes = list(self.G.nodes())
         n_edges = self.G.number_of_edges()
@@ -68,69 +65,81 @@ def get_description(self):
         print("Total number of edges: ", n_edges)
 
         print("Start random walks ...")
-        walk_iter = 0
-        n_sampled_walk = 0
-        is_stopped = False
-        while not is_stopped:
-            random.shuffle(nodes)
-            for node in nodes:
-                sys.stdout.write('\r')
-                sys.stdout.write('Walk iteration: %d' % (n_sampled_walk,))
-                sys.stdout.flush()
-                # print("- Walk iteration: ", str(walk_iter + 1))
-                sampled_walk = self.simple_random_walk(walk_length=walk_length, start_node=node)
-                walks.append(sampled_walk)
-                # print(sampled_walk)
-                previous_node = sampled_walk[0]
-                # use the sampled_walk to construct the sampled_graph
-                for i in range(1, len(sampled_walk)):
-                    current_node = sampled_walk[i]
-                    if current_node != previous_node:
-                        sampled_graph.add_edge(previous_node, current_node, weight=self.get_edge_weight(previous_node, current_node))
-                    # update previous node
-                    previous_node = current_node
-                # count sampled walk
-                n_sampled_walk += 1
-                if max_sampled_walk is not None and n_sampled_walk >= max_sampled_walk:
-                    is_stopped = True
-                    break
-
-            walk_iter += 1
-            if walk_iter >= max_walk_iteration:
-                is_stopped = True
-                break
-
-        return sampled_graph, walks
-
-    def simple_random_walk(self, walk_length, start_node):
-        """
-        Simulate a random walk starting from start node.
-        """
         G = self.G
 
-        walk = [start_node]
-
-        while len(walk) < walk_length:
-            cur = walk[-1]
-            cur_nbrs = sorted(G.neighbors(cur))
-            if len(cur_nbrs) > 0:
-                transition_probs = self.get_transition_prob(cur, cur_nbrs)
-                next_node = np.random.choice(cur_nbrs, p=transition_probs)
-                walk.append(next_node)
+        in_adj = {}
+        out_adj = {}  # store neighbors for each node
+        for node in nodes:
+            if self.is_directed:
+                # note: successors and neighbors are the same for directed networks
+                in_adj[node] = set(G.predecessors(node)).union(set(G.successors(node)))
+                out_adj[node] = set(G.successors(node))
             else:
-                break
+                in_adj[node] = set(G.neighbors(node))
+                out_adj[node] = set(in_adj[node])
 
-        return walk
+        random.shuffle(nodes)  # shuffle node set before doing random walks
+        for i in range(0, max_walk_iteration):
+            step = 0
+            for node in nodes:
+                sys.stdout.write('\r')
+                sys.stdout.write('Iteration %d, step %d' % (i, step))
+                sys.stdout.flush()
+                step += 1
 
-    def get_transition_prob(self, cur_node, neighbors):
-        sum_weights = 0
-        probs = np.zeros(shape=(len(neighbors), ))
+                tau = {}
+                walk = [node]
+                walk_l = 0
 
-        for i, nbr in enumerate(neighbors):
-            nbr_weight = self.get_edge_weight(cur_node, nbr)
-            sum_weights += nbr_weight
-            probs[i] = nbr_weight
-        return probs/sum_weights
+                while walk_l < walk_length - 1:
+                    u = walk[walk_l]
+                    if out_adj[u] == set():  # cannot go further
+                        break
+                    for w in in_adj[u]:  # defuse to all (in, out) neighbors
+                        self.update_value(tau, w, walk_l)
+
+                    total = 0.0
+                    r = random.random()
+                    temp_sum = 0.0
+                    v = list(G.neighbors(u))[0]
+                    if self.is_bfs:
+                        for v in out_adj[u]:
+                            total = total + tau[v] * self.get_edge_weight(u, v)
+
+                        for v in out_adj[u]:
+                            temp_sum = temp_sum + tau[v] * self.get_edge_weight(u, v)
+                            if temp_sum / total > r:
+                                break
+                    else:
+                        for v in out_adj[u]:
+                            total = total + np.reciprocal(tau[v]) * self.get_edge_weight(u, v)
+
+                        for v in out_adj[u]:
+                            temp_sum = temp_sum + np.reciprocal(tau[v]) * self.get_edge_weight(u, v)
+                            if temp_sum / total > r:
+                                break
+
+                    walk.append(v)
+                    walk_l = walk_l + 1
+                walks.append(walk)
+
+        return G, walks
+
+    def update_value(self, tau, u, l):
+        if u in tau:
+            tau[u] = tau[u] + self.additions[l]
+        else:
+            tau[u] = self.additions[l]
+
+        return tau[u]
+
+    @staticmethod
+    def get_value(tau, u):
+        if u not in tau:
+            # tau[u] = self.additions[l]
+            print('unexpected error')
+            exit()
+        return tau[u]
 
     def get_edge_weight(self, node, nbr):
         G = self.G
@@ -141,24 +150,7 @@ def get_description(self):
 
 
 def run_test():
-    data_path = '../data/karate/karate.edgelist'
-    is_directed = False
-
-    kwargs = dict()
-    kwargs['walk_length'] = 15
-    # the default algorithm samples num_walks_iter walks starting for each node
-    kwargs['num_walks_iter'] = 10
-    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
-    kwargs['max_sampled_walk'] = None
-
-    simple_random_walk_sampling = BiasedWalk(None, data_path, is_directed, **kwargs)
-    sampled_graph, walks = simple_random_walk_sampling.get_sampled_graph()
-    print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
-    print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
-    print('number of walks: ', len(walks))
-    print('walk length: ', len(walks[0]))
-
-    return sampled_graph, walks
+    pass
 
 
 if __name__ == '__main__':

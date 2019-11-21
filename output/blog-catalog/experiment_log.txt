@@ -1,0 +1,6 @@
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_Node2Vec-Embedding_1574361877.7048829.emb', 'data': 'blog-catalog', 'walk': 'simple_random_walk-1574361871.648308.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_FastText-Embedding_1574361907.650262.emb', 'data': 'blog-catalog', 'walk': 'simple_random_walk-1574361871.648308.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_CBOW-Embedding_1574361972.7362702.emb', 'data': 'blog-catalog', 'walk': 'simple_random_walk-1574361871.648308.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_Node2Vec-Embedding_1574362369.213388.emb', 'data': 'blog-catalog', 'walk': 'node2vec-random-walk-1574362363.178011.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_FastText-Embedding_1574362399.7688.emb', 'data': 'blog-catalog', 'walk': 'node2vec-random-walk-1574362363.178011.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_CBOW-Embedding_1574362466.3122828.emb', 'data': 'blog-catalog', 'walk': 'node2vec-random-walk-1574362363.178011.txt'}

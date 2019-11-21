@@ -7,6 +7,16 @@
     - **citation**: Nguyen, Duong, and Fragkiskos D. Malliaros. "BiasedWalk: Biased Sampling for Representation Learning on Graphs." 2018 IEEE International Conference on Big Data (Big Data). IEEE, 2018.
     - **note**: the implementation is based on the author's [open-source code](https://github.com/duong18/BiasedWalk/tree/master/source)
 
+- **Node2Vec Biased Random Walk**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/node2vec_random_walk_sampling.py
+    - **citation**: Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2016.
+    - **note**: the implementation is based on the author's [open-source code](https://github.com/aditya-grover/node2vec)
+
+- **Simple Random Walk**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/simple_random_walk_sampling.py
+    - **note**: the simple random walk which uniformly chooses the neighbor to visit
+
+
 ## Dataset
 All the dataset in the data directory have been parsed into edgelist format, which are compatible with the library [GEM: Graph Embedding Methods](https://github.com/palash1992/GEM) and the [node2vec (python implementation)](https://github.com/aditya-grover/node2vec).
 

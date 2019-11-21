@@ -71,12 +71,12 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
 
 def run_evaluation():
     emb_files = [
-        'ppi_Node2Vec-Embedding_1574319348.248242.emb',
-        'ppi_FastText-Embedding_1574319359.119509.emb',
-        'ppi_CBOW-Embedding_1574319391.280555.emb',
+        'ppi_Node2Vec-Embedding_1574359776.849461.emb',
+        'ppi_FastText-Embedding_1574359785.441271.emb',
+        'ppi_CBOW-Embedding_1574359816.124883.emb',
     ]
 
-    sampling_file = 'sample-random-walk-1574319345.835425'
+    sampling_file = 'node2vec-random-walk-1574359775.577266'
     emb_file_dir = './output/ppi/'
     label_file = './data/ppi/ppi-labels.txt'
 

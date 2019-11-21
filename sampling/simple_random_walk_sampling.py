@@ -34,7 +34,7 @@ class SimpleRandomWalkSampling(StaticClassSampling):
         self.max_sampled_walk = kwargs['max_sampled_walk']
         self.walk_length = kwargs['walk_length']
 
-        self.name = 'sample-random-walk'
+        self.name = 'simple-random-walk'
 
     def get_description(self):
         return {'name': self.get_name(), 'walk_length': self.walk_length, 'num_walks_iter': self.num_walks_iter}

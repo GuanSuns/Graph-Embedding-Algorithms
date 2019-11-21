@@ -1,2 +1,0 @@
-{'name': 'node2vec-random-walk', 'p': 1, 'q': 1, 'walk_length': 80, 'edgelist': 'ppi.edgelist', 'num_walks_iter': 10, 'data': 'ppi', 'file': 'node2vec-random-walk-1574313359.810166.txt'}
-{'name': 'sample-random-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'sample-random-walk-1574319345.835425.txt'}
