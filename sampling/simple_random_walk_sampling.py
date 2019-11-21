@@ -6,6 +6,7 @@
 import networkx as nx
 import numpy as np
 import random
+import sys
 import os
 from sampling.static_graph_sampling import StaticClassSampling
 
@@ -66,6 +67,9 @@ class SimpleRandomWalkSampling(StaticClassSampling):
         while not is_stopped:
             random.shuffle(nodes)
             for node in nodes:
+                sys.stdout.write('\r')
+                sys.stdout.write('Walk iteration: %d' % (n_sampled_walk,))
+                sys.stdout.flush()
                 # print("- Walk iteration: ", str(walk_iter + 1))
                 sampled_walk = self.simple_random_walk(walk_length=walk_length, start_node=node)
                 walks.append(sampled_walk)

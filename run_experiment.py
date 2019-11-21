@@ -20,6 +20,7 @@ from gem.embedding.sdne import SDNE
 from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
+from sampling.simple_random_walk_sampling import SimpleRandomWalkSampling
 from embedding.node2vec_embedding import Node2VecEmbedding
 from embedding.fast_text_embedding import FastTextEmbedding
 from embedding.glove_embedding import GloveEmbedding
@@ -46,23 +47,32 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     data_name = os.path.splitext(os.path.basename(data_path))[0]
     is_directed = False
 
+    # define sampling strategy
+    # choose from ['node2vec', 'simple_random_walk', 'biased-walk']
+    sampling_strategy = 'simple_random_walk'
+    sampling_method = None
+    if sampled_walk_file is None:
+        if sampling_strategy == 'node2vec':
+            sampling_method = get_node2vec_random_walk_sampling(data_path, is_directed)
+        elif sampling_strategy == 'simple_random_walk':
+            sampling_method = get_simple_random_walk_sampling(data_path, is_directed)
+
     if sampled_walk_file is not None:
         sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
         walks = sampling_utils.load_sampled_walks(sampled_walk_file)
     else:
-        random_walk_sampling = get_node2vec_random_walk_sampling(data_path, is_directed)
-        sampled_graph, walks = random_walk_sampling.get_sampled_graph()
+        sampled_graph, walks = sampling_method.get_sampled_graph()
         sampled_walk_file = data_name   # default name
         # save to local file
         if is_save_walks:
-            fname = random_walk_sampling.get_name() + '-' + str(datetime.timestamp(datetime.now()))
+            fname = sampling_method.get_name() + '-' + str(datetime.timestamp(datetime.now()))
             sampled_walk_file = fname + '.txt'
             walks_dir = './sampled_walks/'
             if not os.path.exists(walks_dir):
                 os.mkdir(walks_dir)
             walks_dir = walks_dir + data_name + '/'
 
-            walk_description = random_walk_sampling.get_description()
+            walk_description = sampling_method.get_description()
             walk_description['data'] = data_name
             walk_description['file'] = sampled_walk_file
             sampling_utils.save_sampled_walks(G=None, walks=walks, dir=walks_dir, fname=fname, walk_description=walk_description)
@@ -147,6 +157,17 @@ def get_node2vec_random_walk_sampling(data_path, is_directed):
     kwargs['node2vec_c_executable'] = 'node2vec'
 
     return Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+
+
+def get_simple_random_walk_sampling(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
+
+    return SimpleRandomWalkSampling(None, data_path, is_directed, **kwargs)
 
 
 def get_node2vec_model(walks):

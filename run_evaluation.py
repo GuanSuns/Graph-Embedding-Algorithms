@@ -42,10 +42,10 @@ def run_classification_experiment(emb_file, label_file, t_size=0.2):
 
     result = []
     for clf in clf_list:
-        print(clf.__class__.__name__, "\n")
+        print(clf.__class__.__name__)
         (macro_f1, micro_f1) = evaluate_clf(clf, X_train, X_test, y_train, y_test)
         result.append((emb_file.split('/')[-1], clf.__class__.__name__, t_size, macro_f1, micro_f1))
-        print("\n\n")
+        print('\n')
     return result
 
 
@@ -70,9 +70,9 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
 
 def run_evaluation():
     emb_files = [
-        'ppi_Node2Vec-Embedding_1574313361.177779.emb',
-        'ppi_FastText-Embedding_1574313371.2696059.emb',
-        'ppi_CBOW-Embedding_1574313401.892322.emb',
+        'ppi_Node2Vec-Embedding_1574319348.248242.emb',
+        'ppi_FastText-Embedding_1574319359.119509.emb',
+        'ppi_CBOW-Embedding_1574319391.280555.emb',
     ]
 
     emb_file_dir = './output/ppi/'
