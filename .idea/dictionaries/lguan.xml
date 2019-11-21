@@ -3,10 +3,13 @@
     <words>
       <w>aditya</w>
       <w>cbow</w>
+      <w>dataframe</w>
       <w>eigenmaps</w>
       <w>flickr</w>
       <w>gensim</w>
       <w>laplacian</w>
+      <w>lbfgs</w>
+      <w>liblinear</w>
       <w>networkx</w>
       <w>unnormalized</w>
     </words>
