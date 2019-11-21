@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import csv
 
 
 def gensim_model_to_embedding(model, walks):
@@ -21,11 +23,13 @@ def gensim_model_to_embedding(model, walks):
     return embedding
 
 
-def save_embedding_to_file(embedding, fname):
+def save_embedding_to_file(embedding, fname, emb_description=None):
     """
     Save the embeddings to local file
     :param embedding: matrix (or 2d-array) with the format (n_node, dimension)
     :param fname: file to store embedding
+    :param emb_description: a dictionary containing related information of the embedding;
+                        if this is not None, save the experiment experiment_log.csv
     """
     n_node = embedding.shape[0]
     d = embedding.shape[1]
@@ -41,6 +45,17 @@ def save_embedding_to_file(embedding, fname):
                 line += ' '
                 line += str(embedding[node_id][d_index])
             f.write('%s\n' % (line, ))
+
+    current_dir = os.path.dirname(fname) + '/'
+    log_file = current_dir + 'experiment_log.txt'
+    if emb_description is not None:
+        if not os.path.exists(log_file):
+            f = open(log_file, 'w')
+        else:
+            f = open(log_file, 'a')
+        f.write('%s\n' % (str(emb_description),))
+        f.close()
+
 
 
 

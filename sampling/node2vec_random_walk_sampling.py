@@ -57,6 +57,9 @@ class Node2VecRandomWalkSampling(StaticClassSampling):
 
         self.name = 'node2vec-random-walk'
 
+    def get_description(self):
+        return {'name': self.get_name(), 'p': self.p, 'q': self.q, 'walk_length': self.walk_length, 'edgelist': os.path.basename(self.edge_file), 'num_walks_iter':self.num_walks_iter}
+
     def get_name(self):
         return self.name
 

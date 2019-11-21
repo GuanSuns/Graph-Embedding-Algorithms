@@ -6,6 +6,7 @@
 import networkx as nx
 import numpy as np
 import random
+import os
 from sampling.static_graph_sampling import StaticClassSampling
 
 
@@ -33,6 +34,9 @@ class SimpleRandomWalkSampling(StaticClassSampling):
         self.walk_length = kwargs['walk_length']
 
         self.name = 'sample-random-walk'
+
+    def get_description(self):
+        return {'name': self.get_name(), 'walk_length': self.walk_length, 'num_walks_iter': self.num_walks_iter}
 
     def get_name(self):
         return self.name

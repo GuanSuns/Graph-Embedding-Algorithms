@@ -30,6 +30,9 @@ class CBOWEmbedding(StaticGraphEmbedding):
         self.embedding = None
         self._node_num = None
 
+    def get_description(self):
+        return {'name': self.get_method_name(), 'd': self.d, 'max_iter': self.max_iter, 'window_size': self.window_size}
+
     def get_method_name(self):
         return self._method_name
 

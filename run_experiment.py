@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from time import time
+import csv
 import networkx as nx
 import os
 from datetime import datetime
@@ -51,14 +52,20 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     else:
         random_walk_sampling = get_node2vec_random_walk_sampling(data_path, is_directed)
         sampled_graph, walks = random_walk_sampling.get_sampled_graph()
+        sampled_walk_file = data_name   # default name
         # save to local file
         if is_save_walks:
             fname = random_walk_sampling.get_name() + '-' + str(datetime.timestamp(datetime.now()))
+            sampled_walk_file = fname + '.txt'
             walks_dir = './sampled_walks/'
             if not os.path.exists(walks_dir):
                 os.mkdir(walks_dir)
             walks_dir = walks_dir + data_name + '/'
-            sampling_utils.save_sampled_walks(G=None, walks=walks, dir=walks_dir, fname=fname)
+
+            walk_description = random_walk_sampling.get_description()
+            walk_description['data'] = data_name
+            walk_description['file'] = sampled_walk_file
+            sampling_utils.save_sampled_walks(G=None, walks=walks, dir=walks_dir, fname=fname, walk_description=walk_description)
 
     print('number of nodes in the sampled graph: ', sampled_graph.number_of_nodes())
     print('number of edges in the sampled graph: ', sampled_graph.number_of_edges())
@@ -107,8 +114,18 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         # Learn embedding - accepts a networkx graph or file with edge list
         learned_embedding, t = embedding.learn_embedding(graph=sampled_graph, edge_f=None, is_weighted=True, no_python=True)
         # Save embedding to file
-        embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + data_name + '_' + embedding.get_method_name() + '_' + str(t1) + '.emb')
+        emb_description = {}
+        if hasattr(embedding, 'get_description'):
+            emb_description = embedding.get_description()
+        emb_fname = data_name + '_' + embedding.get_method_name() + '_' + str(t1) + '.emb'
+        emb_description['name'] = embedding.get_method_name()
+        emb_description['file'] = emb_fname
+        emb_description['data'] = data_name
+        emb_description['walk'] = sampled_walk_file
+
+        embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + emb_fname, emb_description)
         print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time() - t1))
+
         # you can add visualization and evaluation here
         # Example: Evaluate on graph reconstruction
         # MAP, prec_curv, err, err_baseline = gr.evaluateStaticGraphReconstruction(sampled_graph, embedding, learned_embedding, None)
@@ -176,8 +193,8 @@ def get_glove_model(walks):
 
 
 if __name__ == '__main__':
-    # candidate: ['./data/blog-catalog-deepwalk/blog-catalog.edgelist', './data/flickr-deepwalk/flickr-deepwalk.edgelist', './data/sbm/sbm.edgelist']
-    data_list = ['./data/sbm/sbm.edgelist']
+    # candidate: ['./data/PPI/ppi.edgelist', './data/blog-catalog-deepwalk/blog-catalog.edgelist', './data/flickr-deepwalk/flickr-deepwalk.edgelist', './data/sbm/sbm.edgelist']
+    data_list = ['./data/PPI/ppi.edgelist']
     # candidate: ['./sampled_walks/blog-catalog/node2vec-random-walk-1574042236.322876.txt', './sampled_walks/flickr-deepwalk/node2vec-random-walk-1574063574.331607.txt']
     sampled_walks_list = [None]
     is_save_walks_list = [True]

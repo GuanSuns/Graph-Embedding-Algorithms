@@ -1,4 +1,5 @@
-import sys, csv
+import sys
+import csv
 import argparse
 from evaluation import evaluation_utils
 
@@ -56,7 +57,7 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
     else:
         prediction = clf.predict(X_test)
     if prediction is None:
-        print("run_classification_experiment Error - prediction was not run.")
+        print("run_classification_experiment error - prediction was not run.")
         return
 
     macro_f1 = f1_score(y_test, prediction, average='macro')
@@ -68,15 +69,16 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
 
 def run_evaluation():
     emb_files = [
-        'blog-catalog_Node2Vec-Embedding.emb',
-        'blog-catalog_FastText-Embedding.emb',
-        'blog-catalog_hope_gsvd.emb'
+        'blog-catalog_CBOW-Embedding_1574113020.0535862.emb',
+        'blog-catalog_FastText-Embedding_1574111311.4566038.emb',
+        'blog-catalog_GloVe-Embedding_1574115685.46.emb',
+        'blog-catalog_Node2Vec-Embedding_1574111286.549976.emb'
     ]
 
     emb_file_dir = './output/blog-catalog/'
-    label_file = './labels/blog-catalog-labels.txt'
+    label_file = './data/blog-catalog-deepwalk/blog-catalog-labels.txt'
 
-    csv_file = csv.writer(open('evaluation_results.csv', 'w'))
+    csv_file = csv.writer(open('evaluation_results.csv', 'a'))
 
     for emb_file in emb_files:
         for i in range(1, 10):

@@ -2,11 +2,13 @@ import networkx as nx
 import os
 
 
-def save_sampled_walks(G, walks, fname, dir = './'):
+def save_sampled_walks(G, walks, fname, dir = './', walk_description=None):
     """
     saved the sampled graph and the walks to local file
     :param G: the sampled graph
     :param walks: the sampled walks
+    :param walk_description: a dictionary containing related information of the walk;
+                        if this is not None, save the experiment experiment_log.csv
     """
     print('Sampling Utils: saving sampled walks to local file ...')
     if not os.path.exists(dir):
@@ -23,6 +25,16 @@ def save_sampled_walks(G, walks, fname, dir = './'):
                 for node in walk:
                     line = line + str(node) + ' '
                 f.write('%s\n' % (line,))
+
+    current_dir = os.path.dirname(dir + fname + '.txt') + '/'
+    log_file = current_dir + 'experiment_log.txt'
+    if walk_description is not None:
+        if not os.path.exists(log_file):
+            f = open(log_file, 'w')
+        else:
+            f = open(log_file, 'a')
+        f.write('%s\n' % (str(walk_description), ))
+        f.close()
 
 
 def load_sampled_walks(fname):
