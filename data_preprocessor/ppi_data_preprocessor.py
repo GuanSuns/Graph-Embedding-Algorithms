@@ -17,18 +17,20 @@ def load_graph(data_fname, label_fname, is_directed=False):
     node2id = dict()
     next_available_id = 0
     for node in list(original_G.nodes()):
-        node_id = node
         if node not in node2id:
             node2id[node] = next_available_id
             node_id = next_available_id
             next_available_id += 1
+        else:
+            node_id = node2id[node]
 
         for neighbor in original_G.neighbors(node):
-            neighbor_id = neighbor
             if neighbor not in node2id:
                 node2id[neighbor] = next_available_id
                 neighbor_id = next_available_id
                 next_available_id += 1
+            else:
+                neighbor_id = node2id[neighbor]
 
             G.add_edge(int(node_id), int(neighbor_id), weight=original_G[node][neighbor]['weight'])
 

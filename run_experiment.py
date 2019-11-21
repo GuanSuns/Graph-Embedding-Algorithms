@@ -84,7 +84,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         os.mkdir(emb_dir)
     # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps'
     # , 'LocallyLinearEmbedding', 'node2vec', 'FastText', 'CBOW', 'Glove']
-    model_to_run = ['node2vec', 'FastText', 'CBOW', 'LocallyLinearEmbedding']
+    model_to_run = ['node2vec', 'FastText', 'CBOW']
     models = list()
 
     # Load the models you want to run
