@@ -52,6 +52,7 @@ def load_graph(data_fname, label_fname, is_directed=False):
             labels = line.strip().split()
             if n_labels is None:
                 n_labels = len(labels) - 1
+                print('\nNumber of label: ', n_labels)
 
             node = int(labels[0])
             node_id = node2id[node]
@@ -79,7 +80,7 @@ def save_graph_to_edge_list(graph, label_info, fname):
             line = str(node_id)
             for l in range(0, len(label_info[node_id])):
                 line += ' '
-                line += str(l)
+                line += str(label_info[node_id][l])
             f.write('%s\n' % (line,))
 
 

@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9cad39f1-dcba-4622-aa60-3919d4125daf" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/raw_data/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/raw_data/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_preprocessor/ppi_data_preprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_preprocessor/ppi_data_preprocessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/run_dataset.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tempGraph.emb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/tempGraph.graph" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -207,7 +208,7 @@
       <workItem from="1572545582345" duration="214000" />
       <workItem from="1572648473380" duration="26966000" />
       <workItem from="1573872426815" duration="10614000" />
-      <workItem from="1573928269978" duration="6500000" />
+      <workItem from="1573928269978" duration="7027000" />
     </task>
     <servers />
   </component>
@@ -231,7 +232,7 @@
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$simple_random_walk_sampling.coverage" NAME="simple_random_walk_sampling Coverage Results" MODIFIED="1572761793803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_in_youtube_deepwalk_preprocessor_py.coverage" NAME="pytest in youtube_deepwalk_preprocessor.py Coverage Results" MODIFIED="1572157525248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$live_journal_snap_preprocessor.coverage" NAME="live_journal_snap_preprocessor Coverage Results" MODIFIED="1572725334869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
-    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$ppi_data_preprocessor.coverage" NAME="ppi_data_preprocessor Coverage Results" MODIFIED="1574303564965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$ppi_data_preprocessor.coverage" NAME="ppi_data_preprocessor Coverage Results" MODIFIED="1574304239155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_karate.coverage" NAME="run_karate Coverage Results" MODIFIED="1571956574016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$amazon_snap_preprocessor.coverage" NAME="amazon_snap_preprocessor Coverage Results" MODIFIED="1574303341569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_for_run_karate_test_dataset.coverage" NAME="pytest for run_karate.test_dataset Coverage Results" MODIFIED="1571956497771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
