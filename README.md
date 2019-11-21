@@ -59,3 +59,10 @@ All the dataset in the data directory have been parsed into edgelist format, whi
     - **live-journal-snap-top5000-community-info.txt**: each line represents a node and the top5000 community it belongs to; the format is (node_id, [list of community_id]). It should be noticed that the community id is not the same as the community id in live-journal-snap-community-info.txt
     - **citation**: J. Yang and J. Leskovec. Defining and Evaluating Network Communities based on Ground-truth. ICDM, 2012.
 
+- **The Protein-Protein Interaction (PPI) dataset
+    - **raw data**: http://jiongqianliang.com/MILE/
+    - **content**: 3852 nodes, 38705 links
+    - **preprocessor/parser**: [ppi_data_preprocessor.py](https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/data_preprocessor/ppi_data_preprocessor.py)
+    - **ppi.edgelist**: each line represents an edge in the graph; the format is (node_from, node_to, weight)
+    - **ppi-label.txt**: each line represents a node and the labels it has; the format is (node_id, [list of labels]).
+    - **citation**: Breitkreutz, Bobby-Joe, et al. "The BioGRID interaction database: 2008 update." Nucleic acids research (2007)

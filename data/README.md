@@ -25,3 +25,6 @@
 
 - amazon-snap: The Amazon Product Co-Purchasing Network and Ground-Truth Communities in SNAP
     - J. Yang and J. Leskovec. "Defining and Evaluating Network Communities based on Ground-truth." ICDM, 2012.
+
+- ppi: The Protein-Protein Interaction (PPI) 
+    - 
