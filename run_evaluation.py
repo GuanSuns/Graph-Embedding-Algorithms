@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
 
-def run_classification_experiment(emb_file, label_file, t_size=0.2):
+def run_classification_experiment(emb_file, label_file, t_size=0.2, sampling=''):
     seed = 0
     print('Start running multi-label classification experiment ...')
     print('Embedding file: ', emb_file.split('/')[-1])
@@ -44,7 +44,8 @@ def run_classification_experiment(emb_file, label_file, t_size=0.2):
     for clf in clf_list:
         print(clf.__class__.__name__)
         (macro_f1, micro_f1) = evaluate_clf(clf, X_train, X_test, y_train, y_test)
-        result.append((emb_file.split('/')[-1], clf.__class__.__name__, t_size, macro_f1, micro_f1))
+        record = {'emb_file': emb_file.split('/')[-1], 'classifier': clf.__class__.__name__, 'macro_f1': macro_f1, 'micro_f1': micro_f1, 'test_set_size': t_size, 'sampling': sampling}
+        result.append(record)
         print('\n')
     return result
 
@@ -75,18 +76,22 @@ def run_evaluation():
         'ppi_CBOW-Embedding_1574319391.280555.emb',
     ]
 
+    sampling_file = 'sample-random-walk-1574319345.835425'
     emb_file_dir = './output/ppi/'
     label_file = './data/ppi/ppi-labels.txt'
 
     eval_result_fname = 'evaluation_results.csv'
+    field_names = ['emb_file', 'sampling',  'classifier', 'macro_f1', 'micro_f1', 'test_set_size']
     if not os.path.exists(eval_result_fname):
-        csv_file = csv.writer(open(eval_result_fname, 'w'))
+        # ['emb_file', 'classifier', 'macro_f1', 'micro_f1', 'test_set_size']
+        csv_file = csv.DictWriter(open(eval_result_fname, 'w'), fieldnames=field_names)
+        csv_file.writeheader()
     else:
-        csv_file = csv.writer(open(eval_result_fname, 'a'))
+        csv_file = csv.DictWriter(open(eval_result_fname, 'a'), fieldnames=field_names)
 
     for emb_file in emb_files:
-        for test_size_portion in range(3, 10):
-            result = run_classification_experiment(emb_file_dir + emb_file, label_file, test_size_portion / 10)
+        for test_size_portion in range(1, 10):
+            result = run_classification_experiment(emb_file_dir + emb_file, label_file, test_size_portion / 10.0, sampling=sampling_file)
             for result_item in result:
                 csv_file.writerow(result_item)
 

@@ -1,5 +1,12 @@
 # Graph-Embedding-Algorithms
 
+## Sampling Strategy
+
+- **Biased Walk**
+    - **the codes**:
+    - **citation**: Nguyen, Duong, and Fragkiskos D. Malliaros. "BiasedWalk: Biased Sampling for Representation Learning on Graphs." 2018 IEEE International Conference on Big Data (Big Data). IEEE, 2018.
+    - **note**: the implementation is based on the author's [open-source code](https://github.com/duong18/BiasedWalk/tree/master/source)
+
 ## Dataset
 All the dataset in the data directory have been parsed into edgelist format, which are compatible with the library [GEM: Graph Embedding Methods](https://github.com/palash1992/GEM) and the [node2vec (python implementation)](https://github.com/aditya-grover/node2vec).
 
