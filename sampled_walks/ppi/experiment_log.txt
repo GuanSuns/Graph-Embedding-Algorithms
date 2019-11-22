@@ -1,0 +1,5 @@
+{'name': 'biased-random-walk-dfs', 'walk_length': 80, 'num_walks_iter': 10, 'is_bfs': False, 'i_value': 0.5, 'data': 'ppi', 'file': 'biased-random-walk-dfs-1574398300.780365.txt'}
+{'name': 'node2vec-random-walk', 'p': 4, 'q': 1, 'walk_length': 80, 'edgelist': 'ppi.edgelist', 'num_walks_iter': 10, 'data': 'ppi', 'file': 'node2vec-random-walk-1574398446.602928.txt'}
+{'name': 'simple_random_walk', 'p': 1, 'q': 1, 'walk_length': 80, 'edgelist': 'ppi.edgelist', 'num_walks_iter': 10, 'data': 'ppi', 'file': 'simple_random_walk-1574398526.254327.txt'}
+{'name': 'approximate-bfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'approximate-bfs-walk-1574398648.08918.txt'}
+{'name': 'approximate-dfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'p': 4, 'q': 0.25, 'data': 'ppi', 'file': 'approximate-dfs-walk-1574398764.39482.txt'}

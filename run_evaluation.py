@@ -71,12 +71,22 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
 
 def run_evaluation():
     emb_files = [
-        'blog-catalog_Node2Vec-Embedding_1574361877.7048829.emb'
+        'ppi_Node2Vec-Embedding_1574398302.065598.emb',
+        'ppi_Node2Vec-Embedding_1574398447.8591008.emb',
+        'ppi_Node2Vec-Embedding_1574398527.519395.emb',
+        'ppi_Node2Vec-Embedding_1574398649.3481941.emb',
+        'ppi_Node2Vec-Embedding_1574398765.699774.emb',
     ]
 
-    sampling_file = 'simple_random_walk-1574361871.648308'
-    emb_file_dir = './output/blog-catalog/'
-    label_file = './data/blog-catalog-deepwalk/blog-catalog-labels.txt'
+    sampling_files = [
+        'biased-random-walk-dfs-1574398300.780365',
+        'node2vec-random-walk-1574398446.602928',
+        'simple_random_walk-1574398526.254327',
+        'approximate-bfs-walk-1574398648.08918',
+        'approximate-dfs-walk-1574398764.39482',
+    ]
+    emb_file_dir = './output/ppi/'
+    label_file = './data/ppi/ppi-labels.txt'
 
     eval_result_fname = 'evaluation_results.csv'
     field_names = ['emb_file', 'sampling',  'classifier', 'macro_f1', 'micro_f1', 'test_set_size']
@@ -87,9 +97,9 @@ def run_evaluation():
     else:
         csv_file = csv.DictWriter(open(eval_result_fname, 'a'), fieldnames=field_names)
 
-    for emb_file in emb_files:
+    for i, emb_file in enumerate(emb_files):
         for test_size_portion in range(1, 10):
-            result = run_classification_experiment(emb_file_dir + emb_file, label_file, test_size_portion / 10.0, sampling=sampling_file)
+            result = run_classification_experiment(emb_file_dir + emb_file, label_file, test_size_portion / 10.0, sampling=sampling_files[i])
             for result_item in result:
                 csv_file.writerow(result_item)
 

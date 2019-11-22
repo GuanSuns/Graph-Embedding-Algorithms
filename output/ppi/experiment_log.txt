@@ -1,0 +1,15 @@
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398302.065598.emb', 'data': 'ppi', 'walk': 'biased-random-walk-dfs-1574398300.780365.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398310.891816.emb', 'data': 'ppi', 'walk': 'biased-random-walk-dfs-1574398300.780365.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398338.207959.emb', 'data': 'ppi', 'walk': 'biased-random-walk-dfs-1574398300.780365.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398447.8591008.emb', 'data': 'ppi', 'walk': 'node2vec-random-walk-1574398446.602928.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398456.31905.emb', 'data': 'ppi', 'walk': 'node2vec-random-walk-1574398446.602928.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398482.289524.emb', 'data': 'ppi', 'walk': 'node2vec-random-walk-1574398446.602928.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398527.519395.emb', 'data': 'ppi', 'walk': 'simple_random_walk-1574398526.254327.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398535.9933262.emb', 'data': 'ppi', 'walk': 'simple_random_walk-1574398526.254327.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398561.92182.emb', 'data': 'ppi', 'walk': 'simple_random_walk-1574398526.254327.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398649.3481941.emb', 'data': 'ppi', 'walk': 'approximate-bfs-walk-1574398648.08918.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398657.573799.emb', 'data': 'ppi', 'walk': 'approximate-bfs-walk-1574398648.08918.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398684.347741.emb', 'data': 'ppi', 'walk': 'approximate-bfs-walk-1574398648.08918.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398765.699774.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398774.568293.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398802.326878.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
