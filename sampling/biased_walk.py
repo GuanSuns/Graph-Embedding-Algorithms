@@ -40,7 +40,7 @@ class BiasedWalk(StaticClassSampling):
             self.name = 'biased-random-walk-dfs'
 
         additions = [1.0]
-        for i in range(self.walk_length):
+        for i in range(0, self.walk_length):
             additions.append(self.i_value * additions[i])
         self.additions = additions
 

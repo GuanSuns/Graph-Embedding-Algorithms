@@ -21,6 +21,8 @@ from argparse import ArgumentParser
 
 from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 from sampling.simple_random_walk_sampling import SimpleRandomWalkSampling
+from sampling.bfs_walk_sampling import BfsWalkSampling
+from sampling.dfs_walk_sampling import DfsWalkSampling
 from sampling.biased_walk import BiasedWalk
 from embedding.node2vec_embedding import Node2VecEmbedding
 from embedding.fast_text_embedding import FastTextEmbedding
@@ -49,8 +51,8 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     is_directed = False
 
     # define sampling strategy
-    # choose from ['node2vec', 'simple_random_walk', 'biased-walk']
-    sampling_strategy = 'biased-walk'
+    # choose from ['node2vec', 'simple_random_walk', 'biased-walk', 'approximate-bfs', 'approximate-dfs']
+    sampling_strategy = 'approximate-bfs'
     sampling_method = None
     if sampled_walk_file is None:
         if sampling_strategy == 'node2vec':
@@ -59,6 +61,10 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
             sampling_method = get_simple_random_walk_sampling(data_path, is_directed)
         elif sampling_strategy == 'biased-walk':
             sampling_method = get_biased_walk(data_path, is_directed)
+        elif sampling_strategy == 'approximate-bfs':
+            sampling_method = get_approximate_bfs_walk_sampling(data_path, is_directed)
+        elif sampling_strategy == 'approximate-dfs':
+            sampling_method = get_approximate_dfs_walk_sampling(data_path, is_directed)
 
     if sampled_walk_file is not None:
         sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
@@ -163,6 +169,26 @@ def get_node2vec_random_walk_sampling(data_path, is_directed):
     return Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
 
 
+def get_approximate_dfs_walk_sampling(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    kwargs['max_sampled_walk'] = None
+
+    return DfsWalkSampling(None, data_path, is_directed, **kwargs)
+
+
+def get_approximate_bfs_walk_sampling(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    kwargs['max_sampled_walk'] = None
+
+    return BfsWalkSampling(None, data_path, is_directed, **kwargs)
+
+
 def get_simple_random_walk_sampling(data_path, is_directed):
     kwargs = dict()
     kwargs['walk_length'] = 80  # default value: 80
@@ -185,6 +211,8 @@ def get_simple_random_walk_sampling(data_path, is_directed):
         return sampling_model
     else:
         return SimpleRandomWalkSampling(None, data_path, is_directed, **kwargs)
+
+
 
 
 def get_biased_walk(data_path, is_directed):

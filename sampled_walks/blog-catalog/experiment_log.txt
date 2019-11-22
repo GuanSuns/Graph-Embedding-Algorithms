@@ -1,2 +1,5 @@
 {'name': 'simple_random_walk', 'p': 1, 'q': 1, 'walk_length': 80, 'edgelist': 'blog-catalog.edgelist', 'num_walks_iter': 10, 'data': 'blog-catalog', 'file': 'simple_random_walk-1574361871.648308.txt'}
 {'name': 'node2vec-random-walk', 'p': 0.25, 'q': 0.25, 'walk_length': 80, 'edgelist': 'blog-catalog.edgelist', 'num_walks_iter': 10, 'data': 'blog-catalog', 'file': 'node2vec-random-walk-1574362363.178011.txt'}
+{'name': 'approximate-bfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'blog-catalog', 'file': 'approximate-bfs-walk-1574390184.660834.txt'}
+{'name': 'approximate-dfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'p': 4, 'q': 0.25, 'data': 'blog-catalog', 'file': 'approximate-dfs-walk-1574390478.835981.txt'}
+{'name': 'biased-random-walk-dfs', 'walk_length': 80, 'num_walks_iter': 10, 'is_bfs': False, 'i_value': 1.0, 'data': 'blog-catalog', 'file': 'biased-random-walk-dfs-1574395368.081455.txt'}
