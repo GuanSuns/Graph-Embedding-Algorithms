@@ -2,12 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cad39f1-dcba-4622-aa60-3919d4125daf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/best_results.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/best_results.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/blog-catalog/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/output/blog-catalog/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/blog-catalog/experiment_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/blog-catalog/experiment_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/ppi/experiment_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/ppi/experiment_log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_experiment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sampled_walks/ppi/experiment_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sampled_walks/ppi/experiment_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sampling/sampling_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/sampling/sampling_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,28 +71,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.run_evaluation">
-    <configuration name="amazon_snap_preprocessor" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Graph-Embedding-Algorithms" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_preprocessor" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_preprocessor/amazon_snap_preprocessor.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="ppi_data_preprocessor" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Graph-Embedding-Algorithms" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -177,20 +159,42 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="temperature_random_walk" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Graph-Embedding-Algorithms" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sampling" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sampling/temperature_random_walk.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.run_experiment" />
       <item itemvalue="Python.ppi_data_preprocessor" />
-      <item itemvalue="Python.amazon_snap_preprocessor" />
       <item itemvalue="Python.run_evaluation" />
       <item itemvalue="Python.run_experiment_2" />
+      <item itemvalue="Python.temperature_random_walk" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.run_evaluation" />
         <item itemvalue="Python.run_experiment" />
+        <item itemvalue="Python.temperature_random_walk" />
         <item itemvalue="Python.run_experiment_2" />
         <item itemvalue="Python.ppi_data_preprocessor" />
-        <item itemvalue="Python.amazon_snap_preprocessor" />
       </list>
     </recent_temporary>
   </component>
@@ -212,7 +216,7 @@
       <workItem from="1572545582345" duration="214000" />
       <workItem from="1572648473380" duration="26966000" />
       <workItem from="1573872426815" duration="10614000" />
-      <workItem from="1573928269978" duration="38176000" />
+      <workItem from="1573928269978" duration="47726000" />
     </task>
     <servers />
   </component>
@@ -236,7 +240,7 @@
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$simple_random_walk_sampling.coverage" NAME="simple_random_walk_sampling Coverage Results" MODIFIED="1572761793803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_in_youtube_deepwalk_preprocessor_py.coverage" NAME="pytest in youtube_deepwalk_preprocessor.py Coverage Results" MODIFIED="1572157525248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$live_journal_snap_preprocessor.coverage" NAME="live_journal_snap_preprocessor Coverage Results" MODIFIED="1572725334869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
-    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_evaluation.coverage" NAME="run_evaluation Coverage Results" MODIFIED="1574399283279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_evaluation.coverage" NAME="run_evaluation Coverage Results" MODIFIED="1574410941329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$ppi_data_preprocessor.coverage" NAME="ppi_data_preprocessor Coverage Results" MODIFIED="1574313304923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_karate.coverage" NAME="run_karate Coverage Results" MODIFIED="1571956574016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$amazon_snap_preprocessor.coverage" NAME="amazon_snap_preprocessor Coverage Results" MODIFIED="1574303341569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
@@ -245,12 +249,13 @@
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$flickr_deepwalk_preprocessor.coverage" NAME="flickr_deepwalk_preprocessor Coverage Results" MODIFIED="1572166960793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$youtube_snap_preprocessor_.coverage" NAME="youtube_snap_preprocessor. Coverage Results" MODIFIED="1572725162242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$node2vec_embedding.coverage" NAME="node2vec_embedding Coverage Results" MODIFIED="1572744627321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/embedding" />
-    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_experiment.coverage" NAME="run_experiment Coverage Results" MODIFIED="1574398753710" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_experiment.coverage" NAME="run_experiment Coverage Results" MODIFIED="1574410685243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$youtube_deepwalk_preprocessor.coverage" NAME="youtube_deepwalk_preprocessor Coverage Results" MODIFIED="1572166940084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$blog_catalog_deepwalk_preprocessor.coverage" NAME="blog_catalog_deepwalk_preprocessor Coverage Results" MODIFIED="1572201381330" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$node2vec_random_walk_sampling.coverage" NAME="node2vec_random_walk_sampling Coverage Results" MODIFIED="1572676201975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_in_run_karate_py.coverage" NAME="pytest in run_karate.py Coverage Results" MODIFIED="1571956403743" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$run_dataset.coverage" NAME="run_dataset Coverage Results" MODIFIED="1572728935314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$pytest_for_youtube_deepwalk_preprocessor_test_parser.coverage" NAME="pytest for youtube_deepwalk_preprocessor.test_parser Coverage Results" MODIFIED="1572157431677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_preprocessor" />
+    <SUITE FILE_PATH="coverage/Graph_Embedding_Algorithms$temperature_random_walk.coverage" NAME="temperature_random_walk Coverage Results" MODIFIED="1574406045652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/sampling" />
   </component>
 </project>

@@ -3,3 +3,4 @@
 {'name': 'simple_random_walk', 'p': 1, 'q': 1, 'walk_length': 80, 'edgelist': 'ppi.edgelist', 'num_walks_iter': 10, 'data': 'ppi', 'file': 'simple_random_walk-1574398526.254327.txt'}
 {'name': 'approximate-bfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'approximate-bfs-walk-1574398648.08918.txt'}
 {'name': 'approximate-dfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'p': 4, 'q': 0.25, 'data': 'ppi', 'file': 'approximate-dfs-walk-1574398764.39482.txt'}
+{'name': 'temperature-random-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'temperature-random-walk-1574407649.553194.txt'}

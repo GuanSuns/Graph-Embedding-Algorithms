@@ -13,3 +13,4 @@
 {'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_Node2Vec-Embedding_1574395377.068266.emb', 'data': 'blog-catalog', 'walk': 'biased-random-walk-dfs-1574395368.081455.txt'}
 {'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_FastText-Embedding_1574395411.6389692.emb', 'data': 'blog-catalog', 'walk': 'biased-random-walk-dfs-1574395368.081455.txt'}
 {'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_CBOW-Embedding_1574395483.694892.emb', 'data': 'blog-catalog', 'walk': 'biased-random-walk-dfs-1574395368.081455.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'blog-catalog_Node2Vec-Embedding_1574410698.6902049.emb', 'data': 'blog-catalog', 'walk': 'dfs_bfs_combine-_20191122.0110.txt'}

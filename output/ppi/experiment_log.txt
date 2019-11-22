@@ -13,3 +13,6 @@
 {'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574398765.699774.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
 {'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574398774.568293.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
 {'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574398802.326878.emb', 'data': 'ppi', 'walk': 'approximate-dfs-walk-1574398764.39482.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574407651.737335.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}
+{'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574407661.6262882.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}
+{'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574407691.3515189.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}

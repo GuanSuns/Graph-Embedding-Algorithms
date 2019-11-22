@@ -71,22 +71,14 @@ def evaluate_clf(clf, X_train, X_test, y_train, y_test):
 
 def run_evaluation():
     emb_files = [
-        'ppi_Node2Vec-Embedding_1574398302.065598.emb',
-        'ppi_Node2Vec-Embedding_1574398447.8591008.emb',
-        'ppi_Node2Vec-Embedding_1574398527.519395.emb',
-        'ppi_Node2Vec-Embedding_1574398649.3481941.emb',
-        'ppi_Node2Vec-Embedding_1574398765.699774.emb',
+        'blog-catalog_Node2Vec-Embedding_1574410698.6902049.emb',
     ]
 
     sampling_files = [
-        'biased-random-walk-dfs-1574398300.780365',
-        'node2vec-random-walk-1574398446.602928',
-        'simple_random_walk-1574398526.254327',
-        'approximate-bfs-walk-1574398648.08918',
-        'approximate-dfs-walk-1574398764.39482',
+        'dfs_bfs_combine-_20191122.0110',
     ]
-    emb_file_dir = './output/ppi/'
-    label_file = './data/ppi/ppi-labels.txt'
+    emb_file_dir = './output/blog-catalog/'
+    label_file = './data/blog-catalog-deepwalk/blog-catalog-labels.txt'
 
     eval_result_fname = 'evaluation_results.csv'
     field_names = ['emb_file', 'sampling',  'classifier', 'macro_f1', 'micro_f1', 'test_set_size']

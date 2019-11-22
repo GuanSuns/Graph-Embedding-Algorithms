@@ -46,6 +46,9 @@ def load_sampled_walks(fname):
         for line in f.readlines():
             line = line.strip()
             nodes = line.split(' ')
+            if len(nodes) == 0 or nodes[0] == '':
+                print('loading sampled walks: empty line')
+                continue
 
             walk = []
             for node in nodes:

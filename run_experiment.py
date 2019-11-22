@@ -23,7 +23,9 @@ from sampling.node2vec_random_walk_sampling import Node2VecRandomWalkSampling
 from sampling.simple_random_walk_sampling import SimpleRandomWalkSampling
 from sampling.bfs_walk_sampling import BfsWalkSampling
 from sampling.dfs_walk_sampling import DfsWalkSampling
+from sampling.temperature_random_walk import TemperatureRandomWalkSampling
 from sampling.biased_walk import BiasedWalk
+from sampling.reinforced_biased_walk_sampling import ReinforcedBiasedRandomWalkSampling
 from embedding.node2vec_embedding import Node2VecEmbedding
 from embedding.fast_text_embedding import FastTextEmbedding
 from embedding.glove_embedding import GloveEmbedding
@@ -51,8 +53,8 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
     is_directed = False
 
     # define sampling strategy
-    # choose from ['node2vec', 'simple_random_walk', 'biased-walk', 'approximate-bfs', 'approximate-dfs']
-    sampling_strategy = 'approximate-dfs'
+    # choose from ['reinforced-biased', 'temperature-walk', 'node2vec', 'simple_random_walk', 'biased-walk', 'approximate-bfs', 'approximate-dfs']
+    sampling_strategy = 'reinforced-biased'
     sampling_method = None
     if sampled_walk_file is None:
         if sampling_strategy == 'node2vec':
@@ -65,6 +67,10 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
             sampling_method = get_approximate_bfs_walk_sampling(data_path, is_directed)
         elif sampling_strategy == 'approximate-dfs':
             sampling_method = get_approximate_dfs_walk_sampling(data_path, is_directed)
+        elif sampling_strategy == 'temperature-walk':
+            sampling_method = get_temperature_random_walk_sampling(data_path, is_directed)
+        elif sampling_strategy == 'reinforced-biased':
+            sampling_method = get_reinforced_biased_walk(data_path, is_directed)
 
     if sampled_walk_file is not None:
         sampled_graph = nx.read_edgelist(data_path, data=(('weight', float),), create_using=nx.Graph(), nodetype=int)
@@ -103,7 +109,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         os.mkdir(emb_dir)
     # Choose from ['GraphFactorization', 'HOPE', 'LaplacianEigenmaps'
     # , 'LocallyLinearEmbedding', 'node2vec', 'FastText', 'CBOW', 'Glove']
-    model_to_run = ['node2vec', 'FastText', 'CBOW']
+    model_to_run = ['node2vec']
     models = list()
 
     # Load the models you want to run
@@ -140,7 +146,7 @@ def run_experiment(data_path, sampled_walk_file=None, is_save_walks=False):
         emb_description['name'] = embedding.get_method_name()
         emb_description['file'] = emb_fname
         emb_description['data'] = data_name
-        emb_description['walk'] = sampled_walk_file
+        emb_description['walk'] = os.path.basename(sampled_walk_file)
 
         embedding_utils.save_embedding_to_file(learned_embedding, emb_dir + emb_fname, emb_description)
         print(embedding.get_method_name() + ':\n\tTraining time: %f' % (time() - t1))
@@ -167,6 +173,21 @@ def get_node2vec_random_walk_sampling(data_path, is_directed):
     kwargs['node2vec_c_executable'] = 'node2vec'
 
     return Node2VecRandomWalkSampling(None, data_path, is_directed, **kwargs)
+
+
+def get_temperature_random_walk_sampling(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
+    kwargs['t0'] = kwargs['walk_length']/2.0    # default: walk_length/2=40
+    kwargs['p'] = 0.25
+    kwargs['L'] = 1/kwargs['p'] - kwargs['p']
+    kwargs['k'] = 0.1  # default: 0.1
+
+    return TemperatureRandomWalkSampling(None, data_path, is_directed, **kwargs)
 
 
 def get_approximate_dfs_walk_sampling(data_path, is_directed):
@@ -226,6 +247,19 @@ def get_biased_walk(data_path, is_directed):
     return BiasedWalk(None, data_path, is_directed, **kwargs)
 
 
+def get_reinforced_biased_walk(data_path, is_directed):
+    kwargs = dict()
+    kwargs['walk_length'] = 80  # default value: 80
+    # the default algorithm samples num_walks_iter walks starting for each node
+    kwargs['num_walks_iter'] = 10
+    # set the maximum number of sampled walks (if None, the algorithm will sample from the entire graph)
+    kwargs['max_sampled_walk'] = None
+    kwargs['i_value'] = 0.5  # the initialization value of phenomenon
+    kwargs['window_size'] = 6
+
+    return ReinforcedBiasedRandomWalkSampling(None, data_path, is_directed, **kwargs)
+
+
 def get_node2vec_model(walks):
     kwargs = dict()
     d = 128
@@ -271,10 +305,10 @@ def get_glove_model(walks):
 
 if __name__ == '__main__':
     # candidate: ['./data/PPI/ppi.edgelist', './data/blog-catalog-deepwalk/blog-catalog.edgelist', './data/flickr-deepwalk/flickr-deepwalk.edgelist', './data/sbm/sbm.edgelist']
-    data_list = ['./data/PPI/ppi.edgelist']
+    data_list = ['./data/blog-catalog-deepwalk/blog-catalog.edgelist']
     # candidate: ['./sampled_walks/blog-catalog/node2vec-random-walk-1574042236.322876.txt', './sampled_walks/flickr-deepwalk/node2vec-random-walk-1574063574.331607.txt']
-    sampled_walks_list = [None]
-    is_save_walks_list = [True]
+    sampled_walks_list = ['./sampled_walks/blog-catalog/dfs_bfs_combine-_20191122.0110.txt']
+    is_save_walks_list = [False]
 
     for i in range(0, len(data_list)):
         print('Run experiment using dataset: ' + data_list[i])
