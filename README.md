@@ -15,7 +15,8 @@
     - In the **run\_classification\_experiment** function, set the multi-label classifiers to be used
     
 - **Notes**
-    - The pipeline is inherited from the GEM library, in which we can add evaluation modules in GEM
+    - All the modules are compatible with the GEM library
+    - The pipeline is inherited from the GEM library, which means we can add evaluation modules in GEM
         - Example from GEM: https://github.com/palash1992/GEM/blob/master/examples/run_karate.py
     
 ## Sampling Strategies
