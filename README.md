@@ -1,6 +1,24 @@
 # Graph-Embedding-Algorithms
 
-## Sampling Strategy
+
+## The Pipeline
+
+- **To generate word embedding**
+    - File: **run\_experiment.py**
+    - In the **main** function, set the dataset (or the walks files) and other options
+    - In the **run\_experiment** function, choose the sampling strategy and the word embedding models to be used
+
+- **To evaluate the word embedding**
+    - File: **run\_evaluation.py**
+    - Results: the results will be saved in the evaluation\_results.csv file
+    - In the **run\_evaluation** function, set the embedding files to be used
+    - In the **run\_classification\_experiment** function, set the multi-label classifiers to be used
+    
+- **Notes**
+    - The pipeline is inherited from the GEM library, in which we can add evaluation modules in GEM
+        - Example from GEM: https://github.com/palash1992/GEM/blob/master/examples/run_karate.py
+    
+## Sampling Strategies
 
 - **Biased Walk**
     - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/biased_walk.py
@@ -12,9 +30,45 @@
     - **citation**: Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2016.
     - **note**: the implementation is based on the author's [open-source code](https://github.com/aditya-grover/node2vec)
 
-- **Simple Random Walk**
+- **Uniform Simple Random Walk**
     - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/simple_random_walk_sampling.py
     - **note**: the simple random walk which uniformly chooses the neighbor to visit
+
+- **Approximated BFS Random Walk**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/bfs_walk_sampling.py
+    - **note**: the approximated BFS random walk by setting p = 0.25 and q = 4 in node2vec
+
+- **Approximated DFS Random Walk**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/temperature_random_walk.py
+    - **note**: use logistic function to make the random walk gradually switch from BFS to DFS
+
+- **The Combined Random Walk**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/sampling/dfs_walk_sampling.py
+    - **note**: the approximated BFS random walk by setting p = 4 and q = 0.25 in node2vec
+
+
+## Word Embedding Methods
+
+- **CBOW**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/embedding/cbow_embedding.py
+    - **note**: use the word2vec embedding model in gensim
+    - **citation**: Rehurek, Radim, and Petr Sojka. "Software framework for topic modelling with large corpora." In Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks. 2010.
+
+- **SkipGram**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/embedding/node2vec_embedding.py
+    - **note**: the SkipGram word embedding used in node2vec
+    - **citation**: Rehurek, Radim, and Petr Sojka. "Software framework for topic modelling with large corpora." In Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks. 2010.
+
+- **Fast-Text**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/embedding/fast_text_embedding.py
+    - **note**: the Fast-Text word embedding in gensim
+    - **citation**: Rehurek, Radim, and Petr Sojka. "Software framework for topic modelling with large corpora." In Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks. 2010.
+
+- **Glove**
+    - **implementation**: https://github.com/GuanSuns/Graph-Embedding-Algorithms/blob/master/embedding/glove_embedding.py
+    - **note**: the Glove word embedding in glove_python
+    - **source**: https://github.com/maciejkula/glove-python
+    - **citation**: Pennington, Jeffrey, Richard Socher, and Christopher Manning. "Glove: Global vectors for word representation." Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP). 2014.
 
 
 ## Dataset

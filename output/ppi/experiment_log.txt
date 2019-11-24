@@ -16,3 +16,5 @@
 {'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574407651.737335.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}
 {'name': 'FastText-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_FastText-Embedding_1574407661.6262882.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}
 {'name': 'CBOW-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_CBOW-Embedding_1574407691.3515189.emb', 'data': 'ppi', 'walk': 'temperature-random-walk-1574407649.553194.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574415158.0658162.emb', 'data': 'ppi', 'walk': 'reinforced-biased-random-walk-1574415156.628814.txt'}
+{'name': 'Node2Vec-Embedding', 'd': 128, 'max_iter': 1, 'window_size': 10, 'file': 'ppi_Node2Vec-Embedding_1574454627.831486.emb', 'data': 'ppi', 'walk': 'ppi'}

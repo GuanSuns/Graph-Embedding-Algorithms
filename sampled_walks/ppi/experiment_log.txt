@@ -4,3 +4,4 @@
 {'name': 'approximate-bfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'approximate-bfs-walk-1574398648.08918.txt'}
 {'name': 'approximate-dfs-walk', 'walk_length': 80, 'num_walks_iter': 10, 'p': 4, 'q': 0.25, 'data': 'ppi', 'file': 'approximate-dfs-walk-1574398764.39482.txt'}
 {'name': 'temperature-random-walk', 'walk_length': 80, 'num_walks_iter': 10, 'data': 'ppi', 'file': 'temperature-random-walk-1574407649.553194.txt'}
+{'name': 'reinforced-biased-random-walk', 'window_size': 6, 'walk_length': 80, 'num_walks_iter': 10, 'i_value': 0.5, 'data': 'ppi', 'file': 'reinforced-biased-random-walk-1574415156.628814.txt'}
